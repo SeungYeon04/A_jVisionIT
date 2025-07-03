@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: #fff;
+    }
+
+    /* 상단 로그인 바 */
+    .header-top {
+      background-color: #444;
+      padding: 8px 20px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .login {
+      font-size: 14px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* 하단 메뉴 바 */
+    .header-bottom {
+      background-color: #888;
+      padding: 10px 20px;
+      position: relative; /* 메뉴 가운데 정렬 위한 기준 */
+      height: 60px;
+    }
+
+    .logo {
+      width: 120px;
+      height: 60px;
+      object-fit: cover;
+    }
+
+    .menu {
+      display: flex;
+      gap: 30px;
+      font-size: 14px;
+      color: #fff;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .menu-item {
+      cursor: pointer;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-top">
+    <div class="login">로그인</div>
+  </div>
+
+  <div class="header-bottom">
+    <img src="./img/logo.png" alt="로고" class="logo" />
+    <div class="menu">
+      <div class="menu-item">비전대컴정과</div>
+      <div class="menu-item">학과소개</div>
+      <div class="menu-item">학과?생활</div>
+      <div class="menu-item">비전대사이트</div>
+      <div class="menu-item">한국어</div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -36,23 +36,23 @@
 
     .logo {
       position: absolute;
-      left: 20px;
+      left: 50px;
       display: flex;
       align-items: center;
     }
 
     .logo img {
-      width: 100px;
+      width: 80px;
       height: auto;
       object-fit: contain;
-      margin-top: 30px;
     }
 
     .menu {
       display: flex;
-      gap: 30px;
+      gap: 50px;
       font-size: 14px;
       color: #fff;
+      font-size: 15px;
     }
 
     .menu-item {
@@ -113,6 +113,7 @@
     .modal-menu.show {
       display: flex;
     }
+    
 
     /* 반응형: 모바일용 */
     @media (max-width: 768px) {
@@ -122,8 +123,7 @@
       }
 
       .logo img {
-        width: 100px;
-        margin-top: 30px;
+        width: 80px;
       }
 
       .hamburger {

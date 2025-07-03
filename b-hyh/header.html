@@ -4,11 +4,44 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./header.css" />
+  <link rel="stylesheet" href="./login.css">
 </head>
+<style>
+  /* 배경을 어둡게 하기 위한 별도 오버레이 div 추가 */
+#login-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* ✅ 투명도 있는 회색 */
+  z-index: 1000;
+}
+
+/* 모달은 불투명 유지 */
+.modal-login {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 400px;
+  background-color: white;
+  z-index: 1001; /* backdrop 위에 오도록 설정 */
+  opacity: 1; /* ✅ 반드시 완전 불투명 유지 */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+</style>
 <body>
   <!-- 로그인 영역 -->
   <div class="header-top">
-    <div class="login">로그인</div>
+    <div class="login" onclick="openLoginModal()">로그인</div>
   </div>
 
   <!-- 헤더 -->
@@ -43,22 +76,8 @@
     <div class="menu-item">학과 생활</div>
     <div class="menu-item">비전대 홈페이지</div>
   </div>
-
-  <script>
-    function toggleMenu() {
-      const modal = document.getElementById("modal-menu");
-      const backdrop = document.getElementById("menu-backdrop");
-      const isOpen = modal.classList.contains("show");
-
-      if (isOpen) {
-        modal.classList.remove("show");
-        backdrop.style.display = "none";
-      } else {
-        modal.classList.add("show");
-        backdrop.style.display = "block";
-      }
-    }
-  </script>
-
+<div id="login-backdrop" style="display: none;"></div>
+<div id="login-modal-container"></div>
+  <script src="./header.js"></script>
 </body>
 </html>

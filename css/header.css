@@ -1,14 +1,6 @@
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: sans-serif;
-      background-color: #fff;
-    }
-
+body{
+  margin: 0px 0px;
+}
     /* 상단 로그인 영역 */
     .header-top {
       background-color: #444;
@@ -26,7 +18,6 @@
     /* 하단 헤더 영역 */
     .header-bottom {
       background-color: #888;
-      padding: 10px 20px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -113,7 +104,34 @@
     .modal-menu.show {
       display: flex;
     }
-    
+    #login-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* ✅ 투명도 있는 회색 */
+  z-index: 1000;
+}
+
+/* 모달은 불투명 유지 */
+.modal-login {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 400px;
+  background-color: white;
+  z-index: 1001; /* backdrop 위에 오도록 설정 */
+  opacity: 1; /* ✅ 반드시 완전 불투명 유지 */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
     /* 반응형: 모바일용 */
     @media (max-width: 768px) {

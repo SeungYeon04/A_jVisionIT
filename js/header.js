@@ -1,5 +1,5 @@
 function openLoginModal() {
-  fetch('./login.html')
+  fetch('/module/login.html')
     .then(res => res.text())
     .then(html => {
       const backdrop = document.getElementById('login-backdrop');
@@ -15,7 +15,7 @@ function openLoginModal() {
         container.style.display = 'none';
       };
 
-      import('./login.js').then(module => {
+      import('/js/login.js').then(module => {
         module.initLoginModal(); // ✅ 여기서 매번 초기화
       });
     });

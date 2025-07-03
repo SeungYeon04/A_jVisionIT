@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: rgb(126, 126, 126);
+            opacity: 0.6;
+        }
+
+        .modal-login {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 400px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-login {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-login h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .modal-login-logo {
+            width: max-content;
+            margin-bottom: 20px;
+        }
+
+        .modal-login-logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        .modal-login-input {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .modal-login-input input {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .modal-login-submitBtn {
+            width: 30%;
+            padding: 10px;
+            color: white;
+            border: none;
+            background-color: #bbbbbb;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="modal-login">
+        <div class="modal-login">
+            <h2>교수님 어서오세요 OTL</h2>
+            <div class="modal-login-logo">
+                <div class="logo">
+                    <img src="./img/logo.png" alt="Logo">
+                </div>
+            </div>
+
+            <div class="modal-login-input">
+                <input type="text" placeholder="아이디">
+                <input type="password" placeholder="비밀번호">
+            </div>
+            <button class="modal-login-submitBtn" type="button">Go</button>
+        </div>
+    </div>
+</body>
+
+<script>
+
+    // 입력값 검증 (예: 빈 값 체크)
+    const passwordInput = document.querySelector('.modal-login-input input[type="password"]');
+    const username = document.querySelector('.modal-login-input input[type="text"]').value;
+    const password = document.querySelector('.modal-login-input input[type="password"]').value;
+    const loginButton = document.querySelector('.modal-login-submitBtn');
+
+
+    console.log(username)
+    passwordInput.addEventListener('input', () => {
+            //비밀번호 4글자 이상 입력 시 활성화
+            if (passwordInput.value.length >= 4) {
+                loginButton.style.backgroundColor = 'skyblue';
+            } else {
+                loginButton.style.backgroundColor = '#22bfff;';
+            }
+        })
+    // 로그인 버튼 클릭 시 동작
+    document.querySelector('.modal-login-submitBtn').addEventListener('click', function () {
+
+        if (username === '' || password === '') {
+            alert('아이디와 비밀번호를 입력해주세요.');
+            return;
+        } else {
+            location.href = 'index.html'
+        }
+        // 로그인 성공 시 페이지 이동
+        location.href = 'index.html';
+    });
+</script>
+
+</html>

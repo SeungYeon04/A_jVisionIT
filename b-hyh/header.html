@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * {
       margin: 0;
@@ -14,7 +15,7 @@
       background-color: #fff;
     }
 
-    /* 상단 로그인 바 */
+    /* 상단 로그인 영역 */
     .header-top {
       background-color: #444;
       padding: 8px 20px;
@@ -28,18 +29,29 @@
       cursor: pointer;
     }
 
-    /* 하단 메뉴 바 */
+    /* 하단 헤더 영역 */
     .header-bottom {
       background-color: #888;
       padding: 10px 20px;
-      position: relative; /* 메뉴 가운데 정렬 위한 기준 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
       height: 60px;
+      position: relative;
     }
 
     .logo {
-      width: 120px;
-      height: 60px;
-      object-fit: cover;
+      position: absolute;
+      left: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      width: 100px;
+      height: auto;
+      object-fit: contain;
+      margin-top: 30px;
     }
 
     .menu {
@@ -47,35 +59,144 @@
       gap: 30px;
       font-size: 14px;
       color: #fff;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      top: 50%;
-      transform: translate(-50%, -50%);
     }
 
     .menu-item {
       cursor: pointer;
       white-space: nowrap;
     }
+
+    .hamburger {
+      position: absolute;
+      right: 20px;
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background-color: #fff;
+    }
+
+    /* 오버레이 배경 */
+    .menu-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+    }
+
+    /* 모달 메뉴 */
+    .modal-menu {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      font-size: 18px;
+      color: white;
+      padding: 30px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1001;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 300px;
+    }
+    .modal-menu .menu-item:hover {
+        color: #ff6363;
+    }
+
+    .modal-menu.show {
+      display: flex;
+    }
+
+    /* 반응형: 모바일용 */
+    @media (max-width: 768px) {
+      .header-bottom {
+        height: 60px;
+        justify-content: center;
+      }
+
+      .logo img {
+        width: 100px;
+        margin-top: 30px;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .menu {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
 
+  <!-- 로그인 영역 -->
   <div class="header-top">
     <div class="login">로그인</div>
   </div>
 
+  <!-- 헤더 -->
   <div class="header-bottom">
-    <img src="./img/logo.png" alt="로고" class="logo" />
+    <!-- 로고 (왼쪽 고정) -->
+    <div class="logo">
+      <img src="./img/logo.png" alt="로고" />
+    </div>
+
+    <!-- 햄버거 (오른쪽 고정) -->
+    <div class="hamburger" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <!-- 메뉴 (가운데 정렬) -->
     <div class="menu">
-      <div class="menu-item">비전대컴정과</div>
-      <div class="menu-item">학과소개</div>
-      <div class="menu-item">학과?생활</div>
-      <div class="menu-item">비전대사이트</div>
-      <div class="menu-item">한국어</div>
+      <div class="menu-item">컴퓨터 정보과</div>
+      <div class="menu-item">학과 소개</div>
+      <div class="menu-item">학과 생활</div>
+      <div class="menu-item">비전대 홈페이지</div>
     </div>
   </div>
+
+  <!-- 오버레이 + 모바일용 드롭다운 메뉴 -->
+  <div class="menu-backdrop" id="menu-backdrop" onclick="toggleMenu()"></div>
+
+  <div class="modal-menu" id="modal-menu">
+    <div class="menu-item">컴퓨터 정보과</div>
+    <div class="menu-item">학과 소개</div>
+    <div class="menu-item">학과 생활</div>
+    <div class="menu-item">비전대 홈페이지</div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const modal = document.getElementById("modal-menu");
+      const backdrop = document.getElementById("menu-backdrop");
+      const isOpen = modal.classList.contains("show");
+
+      if (isOpen) {
+        modal.classList.remove("show");
+        backdrop.style.display = "none";
+      } else {
+        modal.classList.add("show");
+        backdrop.style.display = "block";
+      }
+    }
+  </script>
 
 </body>
 </html>

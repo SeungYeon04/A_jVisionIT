@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,21 +9,10 @@
 <body>
     <div id="header-container"></div>
 
-
-
     다들 html 파일 만들어서 올려주세요.<br />
     이건 테스트입니다.
-
-
-
-    <script>
-        fetch('/module/header.html')
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById('header-container').innerHTML = html;
-            });
-    </script>
-    <script src="/js/header.js"></script>
+    
+<script src="/js/initHeader.js"></script>
 </body>
 
 </html>

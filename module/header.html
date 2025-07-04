@@ -1,43 +1,67 @@
 <link rel="stylesheet" href="/css/header.css" />
-<div>
-  <!-- 로그인 영역 -->
-  <div class="header-top">
-    <div class="login" onclick="openLoginModal()">로그인</div>
+<!-- 로그인 영역 -->
+<div class="header-top">
+  <div class="login" onclick="openLoginModal()">로그인</div>
+</div>
+
+<!-- 헤더 -->
+<div class="header-bottom">
+  <!-- 로고 (왼쪽 고정) -->
+  <div class="logo">
+    <img src="/asset/img/logo.png" alt="로고" />
   </div>
 
-  <!-- 헤더 -->
-  <div class="header-bottom">
-    <!-- 로고 (왼쪽 고정) -->
-    <div class="logo">
-      <img src="/asset/img/logo.png" alt="로고" />
-    </div>
-
-    <!-- 햄버거 (오른쪽 고정) -->
-    <div class="hamburger" onclick="toggleMenu()">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-
-    <!-- 메뉴 (가운데 정렬) -->
-    <div class="menu">
-      <div class="menu-item">컴퓨터 정보과</div>
-      <div class="menu-item">학과 소개</div>
-      <div class="menu-item">학과 생활</div>
-      <div class="menu-item">비전대 홈페이지</div>
-    </div>
+  <!-- 햄버거 (오른쪽 고정, PC에선 숨김 처리됨) -->
+  <div class="hamburger" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
   </div>
 
-  <!-- 오버레이 + 모바일용 드롭다운 메뉴 -->
-  <div class="menu-backdrop" id="menu-backdrop" onclick="toggleMenu()"></div>
-
-  <div class="modal-menu" id="modal-menu">
-    <div class="menu-item">컴퓨터 정보과</div>
+  <!-- 메뉴 (가운데 정렬) -->
+  <div class="menu">
     <div class="menu-item">학과 소개</div>
     <div class="menu-item">학과 생활</div>
-    <div class="menu-item">비전대 홈페이지</div>
+    <div class="menu-item">비전대 통합서비스</div>
   </div>
-  <div id="login-backdrop" style="display: none;"></div>
-  <div id="login-modal-container"></div>
-  <script src="/js/header.js"></script>
 </div>
+<!--블랙 커버배경-->
+<div id="mega-backdrop"></div>
+<!-- Mega Menu (고정된 전체 하위 메뉴) -->
+<div class="mega-menu" id="mega-menu">
+  <div class="mega-column">
+    <div class="column-title">학과 소개</div>
+    <div class="submenu-item">학과설명</div>
+    <div class="submenu-item">커리큘럼</div>
+    <div class="submenu-item">교수진소개</div>
+  </div>
+  <div class="mega-column">
+    <div class="column-title">학과 생활</div>
+    <div class="submenu-item">활동기록</div>
+    <div class="submenu-item">학과게시판</div>
+    <div class="submenu-item">졸업작품</div>
+  </div>
+  <div class="mega-column">
+    <div class="column-title">산학협력단</div>
+    <div class="submenu-item">산학협력단</div>
+  </div>
+  <div class="mega-column">
+    <div class="column-title">주요사이트</div>
+    <div class="submenu-item">비전대 LMS</div>
+    <div class="submenu-item">비전대 포털</div>
+    <div class="submenu-item">강의평가</div>
+    <div class="submenu-item">구글클래스룸</div>
+  </div>
+</div>
+
+<!-- 모바일용 드롭다운 메뉴 -->
+<div class="menu-backdrop" id="menu-backdrop" onclick="toggleMenu()"></div>
+<div class="modal-menu" id="modal-menu">
+  <div class="menu-item">학과 소개</div>
+  <div class="menu-item">학과 생활</div>
+  <div class="menu-item">비전대 통합서비스</div>
+</div>
+
+<!-- 로그인 모달 컨테이너 -->
+<div id="login-backdrop" style="display: none;"></div>
+<div id="login-modal-container"></div>

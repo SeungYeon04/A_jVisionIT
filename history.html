@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>학과활동기록</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="history.css" />
 </head>
 <body>
     <div id="header-container"></div>
@@ -32,7 +32,7 @@
     <div id="modalOverlay" class="modal-overlay">
         <div class="modal">
             <span class="close-btn" id="closeModalButton">✖</span>
-            <h2>새 글 작성</h2>
+            <h2 id="modalTitle">새 글 작성</h2>
             <input type="text" id="newTitle" placeholder="제목 입력" />
             <textarea id="newContent" placeholder="내용 입력"></textarea>
             <input type="file" id="newImageFile" accept="image/*" />
@@ -54,7 +54,7 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="history.js"></script>
     <script src="/js/initHeader.js"></script>
 </body>
 </html>

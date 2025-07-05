@@ -1,116 +1,120 @@
-body{
+body {
   margin: 0px 0px;
 }
-    /* 상단 로그인 영역 */
-    .header-top {
-      background-color: #444;
-      padding: 8px 20px;
-      display: flex;
-      justify-content: flex-end;
-    }
 
-    .login {
-      font-size: 14px;
-      color: #fff;
-      cursor: pointer;
-    }
+/* 상단 로그인 영역 */
+.header-top {
+  background-color: #444;
+  padding: 8px 20px;
+  display: flex;
+  justify-content: flex-end;
+}
 
-    /* 하단 헤더 영역 */
-    .header-bottom {
-      background-color: #888;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 60px;
-      position: relative;
-    }
+.login {
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+}
 
-    .logo {
-      position: absolute;
-      left: 50px;
-      display: flex;
-      align-items: center;
-    }
+/* 하단 헤더 영역 */
+.header-bottom {
+  background-color: #888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  position: relative;
+}
 
-    .logo img {
-      width: 80px;
-      height: auto;
-      object-fit: contain;
-    }
+.logo {
+  position: absolute;
+  left: 50px;
+  display: flex;
+  align-items: center;
+}
 
-    .menu {
-      display: flex;
-      gap: 50px;
-      font-size: 14px;
-      color: #fff;
-      font-size: 15px;
-    }
+.logo img {
+  width: 80px;
+  height: auto;
+  object-fit: contain;
+}
 
-    .menu-item {
-      cursor: pointer;
-      white-space: nowrap;
-    }
+.menu {
+  display: flex;
+  gap: 50px;
+  font-size: 14px;
+  color: #fff;
+  font-size: 15px;
+}
 
-    .hamburger {
-      position: absolute;
-      right: 20px;
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-    }
+.menu-item {
+  cursor: pointer;
+  white-space: nowrap;
+}
 
-    .hamburger div {
-      width: 25px;
-      height: 3px;
-      background-color: #fff;
-    }
+.hamburger {
+  position: absolute;
+  right: 20px;
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
 
-    /* 오버레이 배경 */
-    .menu-backdrop {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      z-index: 1000;
-    }
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background-color: #fff;
+}
 
-    /* 모달 메뉴 */
-    .modal-menu {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      font-size: 18px;
-      color: white;
-      padding: 30px;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 1001;
-      border-radius: 8px;
-      width: 80%;
-      max-width: 300px;
-    }
-    .modal-menu .menu-item:hover {
-        color: #ff6363;
-    }
-
-    .modal-menu.show {
-      display: flex;
-    }
-    #login-backdrop {
+/* 오버레이 배경 */
+.menu-backdrop {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* ✅ 투명도 있는 회색 */
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+}
+
+/* 모달 메뉴 */
+.modal-menu {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-size: 18px;
+  color: white;
+  padding: 30px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 300px;
+}
+
+.modal-menu .menu-item:hover {
+  color: #ff6363;
+}
+
+.modal-menu.show {
+  display: flex;
+}
+
+#login-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* ✅ 투명도 있는 회색 */
   z-index: 1000;
 }
 
@@ -123,8 +127,10 @@ body{
   width: 300px;
   height: 400px;
   background-color: white;
-  z-index: 1001; /* backdrop 위에 오도록 설정 */
-  opacity: 1; /* ✅ 반드시 완전 불투명 유지 */
+  z-index: 1001;
+  /* backdrop 위에 오도록 설정 */
+  opacity: 1;
+  /* ✅ 반드시 완전 불투명 유지 */
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   display: flex;
@@ -132,23 +138,90 @@ body{
   align-items: center;
   justify-content: center;
 }
+/* ✅ Mega Menu 추가 영역 */
+.mega-menu {
+  position: absolute;
+  top: 95px;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-around;
+  z-index: 999;
 
-    /* 반응형: 모바일용 */
-    @media (max-width: 768px) {
-      .header-bottom {
-        height: 60px;
-        justify-content: center;
-      }
+  /* ✅ 애니메이션용 초기 설정 */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+#mega-backdrop {
+  position: fixed;
+  top: 95px; /* 메뉴 아래만 어둡게 하려면 해당 위치부터 */
+  left: 0;
+  width: 100%;
+  height: calc(100% - 95px); /* 전체 아래 부분만 */
+  background-color: rgba(0, 0, 0, 0.1);
+  z-index: 998;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
 
-      .logo img {
-        width: 80px;
-      }
+#mega-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+}
+/* ✅ show 클래스 추가 시 활성화 */
+.mega-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
 
-      .hamburger {
-        display: flex;
-      }
+.mega-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-      .menu {
-        display: none;
-      }
-    }
+.column-title {
+  font-weight: bold;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #333;
+}
+
+.submenu-item {
+  font-size: 13px;
+  color: #444;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.submenu-item:hover {
+  color: #0078d4;
+  text-decoration: underline;
+}
+
+/* 반응형: 모바일용 */
+@media (max-width: 768px) {
+  .header-bottom {
+    height: 60px;
+    justify-content: center;
+  }
+
+  .logo img {
+    width: 80px;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .menu {
+    display: none;
+  }
+}

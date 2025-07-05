@@ -1,38 +1,57 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>활동기록</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>학과활동기록</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
     <div id="header-container"></div>
-    <header class="header-title">
-        <div class="title-section">
-        <h1>활동기록</h1>
-        <p class="update-date">마지막 업데이트 2025. 06. 30</p>
+    <header class="page-header">
+        <img src="img/logo.png" alt="" class="department-icon" />
+        <div class="header-text">
+            <h1 class="page-title">활동기록</h1>
+            <p class="last-update" id="lastUpdateDate">마지막 업데이트 2025. 06. 30</p>
         </div>
     </header>
 
-    <main class="activity-list" id="activityList">
-        <!-- 활동 항목들이 여기에 동적으로 추가됩니다 -->
-    </main>
+    <div class="search-bar">
+        <select class="search-filter">
+            <option value="title">제목</option>
+        </select>
+        <input type="text" id="searchInput" placeholder="검색어를 입력하세요" />
+        <button id="searchButton">🔍</button>
+    </div>
 
-    <button class="write-button" id="openWriteModal">글쓰기</button>
+    <main class="activity-container" id="activityContainer"></main>
 
-    <!-- 글쓰기 모달 -->
-    <div class="modal" id="writeModal">
-        <div class="modal-content">
-        <span class="close-button" id="closeModal">&times;</span>
-        <h2>새 활동 작성</h2>
-        <form id="writeForm">
-            <input type="file" id="imageInput" accept="image/*" required><br>
-            <img id="imagePreview">
-            <input type="text" id="titleInput" placeholder="제목" required><br>
-            <textarea id="descInput" placeholder="설명" rows="4" required></textarea><br>
-            <button type="submit">등록</button>
-        </form>
+    <!-- 글쓰기 버튼 -->
+    <button class="write-btn" id="writeButton">글쓰기</button>
+
+    <!-- 새 글 작성 모달 -->
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal">
+            <span class="close-btn" id="closeModalButton">✖</span>
+            <h2>새 글 작성</h2>
+            <input type="text" id="newTitle" placeholder="제목 입력" />
+            <textarea id="newContent" placeholder="내용 입력"></textarea>
+            <input type="file" id="newImageFile" accept="image/*" />
+            <div id="imagePreviewWrapper" class="image-preview-wrapper">
+                <img id="imagePreview" class="image-preview" />
+            </div>
+            <button id="addNewPostButton">등록하기</button>
+        </div>
+    </div>
+
+    <!-- 게시글 상세 보기 모달 -->
+    <div id="detailModalOverlay" class="modal-overlay">
+        <div class="modal detail-modal">
+            <span class="close-btn" id="closeDetailModalButton">✖</span>
+            <img id="detailImage" class="detail-image" alt="게시글 이미지" />
+            <h2 id="detailTitle" class="detail-title"></h2>
+            <p id="detailContent" class="detail-content"></p>
+            <p id="detailDate" class="detail-date"></p>
         </div>
     </div>
 

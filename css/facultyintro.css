@@ -10,31 +10,12 @@ body {
   max-width: 800px;
   margin: 0 auto;
   background-color: #ffffff; /* White background for the main content */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Header Navigation */
-header {
-  background-color: #6a6a6a; /* Dark grey header background */
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-}
-
-header nav a {
-  color: white;
-  text-decoration: none;
-  margin-right: 20px;
-  font-size: 14px;
-}
-
-header .language-selector {
-  border: 1px solid #a0a0a0;
-  padding: 5px 10px;
-  font-size: 12px;
-  cursor: pointer;
+@media screen and (min-width: 800px) {
+  .container {
+    max-width: 1200px;
+  }
 }
 
 /* Main Content Area */
@@ -67,6 +48,18 @@ main {
   align-items: center;
   padding: 20px 0;
   border-bottom: 1px solid #e0e0e0; /* Separator line */
+}
+
+.professors-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* 기본적으로 한 줄에 하나 */
+  gap: 20px; /* 카드 사이의 간격 조절 */
+}
+
+@media (min-width: 768px) {
+  .professors-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .professor-card:last-child {

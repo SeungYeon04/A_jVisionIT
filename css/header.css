@@ -31,6 +31,7 @@ body {
   left: 50px;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .logo img {
@@ -140,7 +141,7 @@ body {
 /* ✅ Mega Menu 추가 영역 */
 .mega-menu {
   position: absolute;
-  top: 95px;
+  top:61px;
   left: 0;
   width: 100%;
   background-color: white;
@@ -148,7 +149,7 @@ body {
   padding: 20px 0;
   display: flex;
   justify-content: space-around;
-  z-index: 999;
+  z-index: 1100;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
@@ -176,6 +177,7 @@ body {
 }
 
 /* ✅ show 클래스 추가 시 활성화 */
+
 .mega-menu.show {
   opacity: 1;
   visibility: visible;
@@ -223,49 +225,6 @@ body {
   display: block !important;
 }
 
-/* 반응형: 모바일용 */
-@media (max-width: 768px) {
-  .header-bottom {
-    height: 60px;
-    justify-content: center;
-  }
-
-  .header-top {
-    display: none;
-  }
-
-  .logo img {
-    width: 80px;
-  }
-
-  .header-right {
-    display: flex;
-  }
-
-  .hamburger {
-    display: flex;
-    justify-content: center;
-  }
-
-  #mega-backdrop {
-    display: none;
-  }
-
-  .menu {
-    display: none;
-  }
-
-  .mega-menu {
-    display: none;
-  }
-
-  .header-right {
-    display: flex;
-    flex-direction: row;
-    position: absolute;
-    right: 20px;
-    gap: 20px;
-  }
 
 .custom-select-wrapper {
   position: relative;
@@ -327,4 +286,56 @@ body {
   color: white;
   padding: 8px 10px;
 }
+.header-right-pc{
+  display: block !important;
+  position: absolute;
+  right: 20px;
+}
+/* 반응형: 모바일용 */
+@media (max-width: 768px) {
+  .header-bottom {
+    height: 60px;
+    justify-content: center;
+  }
+.header-right-pc{
+  display: none !important;
+}
+  .header-top {
+    display: none;
+  }
+
+  .logo img {
+    width: 80px;
+  }
+
+  .header-right {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+    justify-content: center;
+  }
+
+  #mega-backdrop {
+    display: none;
+  }
+
+  .menu {
+    display: none;
+  }
+
+  .mega-menu {
+    display: none;
+  }
+ 
+
+  .header-right {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    right: 20px;
+    gap: 20px;
+  }
+
 }

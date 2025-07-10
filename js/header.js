@@ -36,6 +36,7 @@ function toggleMenu() {
 }
 
 const header = document.querySelector(".header-bottom");
+const menu = document.querySelector(".menu");
 const megaMenu = document.getElementById("mega-menu");
 const backdrop = document.getElementById("mega-backdrop");
 
@@ -62,15 +63,11 @@ if (!header || !megaMenu) {
   };
 
 
-  header.addEventListener("mouseenter", () => {
+  menu.addEventListener("mouseenter", () => {
     isOver = true;
     openMenu();
   });
 
-  header.addEventListener("mouseleave", () => {
-    isOver = false;
-    closeMenu();
-  });
     megaMenu.addEventListener("mouseenter", () => {
     isOver = true;
     openMenu();

@@ -94,3 +94,48 @@ main {
   font-size: 0.9rem;
   color: #555;
 }
+.info-section {
+  padding: 60px 5%;
+  background-color: #fff;
+  text-align: center;
+}
+
+.info-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 40px;
+  color: #222;
+}
+
+.info-cards {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  width: 280px;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.card-text {
+  padding: 16px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #333;
+}

@@ -35,8 +35,6 @@ function toggleMenu() {
   }
 }
 
-console.log("✅ header.js 실행됨");
-
 const header = document.querySelector(".header-bottom");
 const megaMenu = document.getElementById("mega-menu");
 const backdrop = document.getElementById("mega-backdrop");
@@ -49,7 +47,7 @@ if (!header || !megaMenu) {
 
   const openMenu = () => {
     megaMenu.classList.add("show");
-      backdrop.classList.add("show");
+    backdrop.classList.add("show");
     clearTimeout(timer);
     isOver = true;
   };
@@ -65,28 +63,63 @@ if (!header || !megaMenu) {
 
 
   header.addEventListener("mouseenter", () => {
-    console.log("🟡 header mouseenter");
     isOver = true;
     openMenu();
   });
 
   header.addEventListener("mouseleave", () => {
-    console.log("🟡 header mouseleave");
     isOver = false;
     closeMenu();
   });
-
-  megaMenu.addEventListener("mouseenter", () => {
-    console.log("🟢 megaMenu mouseenter");
+    megaMenu.addEventListener("mouseenter", () => {
     isOver = true;
     openMenu();
-  });
-
-  megaMenu.addEventListener("mouseleave", () => {
-    console.log("🔴 megaMenu mouseleave");
+    });
+    megaMenu.addEventListener("mouseleave", () => {
     isOver = false;
     closeMenu();
   });
-  
 }
+const customSelect = document.getElementById("custom-select");
+const selected = document.getElementById("selected-language");
+const selectedText = selected.querySelector(".lang-text"); // ✅ 추가
+const options = customSelect.querySelectorAll(".custom-options li");
+
+customSelect.addEventListener("click", () => {
+  customSelect.classList.toggle("open");
+});
+
+options.forEach(option => {
+  option.addEventListener("click", e => {
+    e.stopPropagation();
+
+    const value = option.getAttribute("data-value");
+    const text = option.textContent;
+
+    selectedText.textContent = text; // ✅ 텍스트만 바꿈 (아이콘 유지)
+    customSelect.classList.remove("open");
+
+    options.forEach(opt => opt.classList.remove("selected"));
+    option.classList.add("selected");
+
+    closeModal();
+    changeLanguage(value);
+  });
+});
+
+// 바깥 클릭 시 닫기
+document.addEventListener("click", e => {
+  if (!customSelect.contains(e.target)) {
+    customSelect.classList.remove("open");
+  }
+});
+
+function changeLanguage(value) {
+  console.log("🌐 언어 변경:", value);
+  // 실제 언어 변경 로직 여기에 구현
+}
+function closeModal() {
+    customSelect.classList.remove("open");
+  }
+
 

@@ -205,10 +205,13 @@ body {
   cursor: pointer;
   white-space: nowrap;
 }
+a{
+  text-decoration: none;
+}
 
 .submenu-item:hover {
   color: #0078d4;
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 
 .header-right {

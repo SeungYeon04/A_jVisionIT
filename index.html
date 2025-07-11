@@ -1,21 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/css/hero.css">
+    <link rel="stylesheet" href="/css/all_font.css" />
+
 </head>
 
+
 <body>
-    <!--body 아래 추가-->    
     <div id="header-container"></div>
-    <!--헤더 추가-->    
 
-    다들 html 파일 만들어서 올려주세요.<br />
-    이건 테스트입니다.
+    <main>
+        <!-- 🔹 슬라이드 배너 -->
+        <section class="main-slider">
+            <div class="slider">
+                <img id="mainBannerImage" src="/asset/img/school_main.png" alt="메인 배너" />
 
-    <!--헤더 추가-->    
-    <script src="/js/initHeader.js"></script>
-    <!--헤더 추가-->    
+                <!-- ✅ 모바일 고정 메뉴 오버레이 -->
+                <div class="mobile-overlay-menu">
+                    <div class="overlay-item">
+                        <img src="/asset/img/logo.png" alt="잠금" />
+                        <p>학과소개</p>
+                    </div>
+                    <div class="overlay-item">
+                        <img src="/asset/img/logo.png" alt="잠금" />
+                        <p>대학생활</p>
+                    </div>
+                    <div class="overlay-item">
+                        <img src="/asset/img/logo.png" alt="잠금" />
+                        <p>산학협력단</p>
+                    </div>
+                    <div class="overlay-item">
+                        <img src="/asset/img/logo.png" alt="잠금" />
+                        <p>공식사이트</p>
+                    </div>
+                    <div class="overlay-item">
+                        <img src="/asset/img/logo.png" alt="잠금" />
+                        <p>로그인</p>
+                    </div>
+                </div>
+
+                <div class="dots">
+                    <span class="dot"></span>
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 🔹 자주 찾는 정보 -->
+        <section class="info-section">
+            <h2 class="info-title">자주 찾는 컴정과 정보</h2>
+            <div class="info-cards-container">
+                <button class="slide-btn left" onclick="slideTo(currentIndex - 1)">&#10094;</button>
+                <div class="info-cards-wrapper" id="infoCardsWrapper">
+                    <section class="info-section">
+                        <h2 class="info-title">자주 찾는 컴정과 정보</h2>
+                        <div class="info-cards-container">
+                            <button class="slide-btn left" onclick="slideTo(currentIndex - 1)">&#10094;</button>
+
+                            <div class="info-cards-wrapper" id="infoCardsWrapper">
+                                <div class="card">
+                                    <img src="/asset/img/박민식_교수님.png" alt="에코리움">
+                                    <p class="card-text">
+                                        2025년도 2학년 시간표공개<br>
+                                        커리큘럼으로 진로 예측해볼까!
+                                    </p>
+                                </div>
+                                <div class="card">
+                                    <img src="/asset/img/poster.png" alt="에코리움">
+                                    <p class="card-text">
+                                        실습실 개방 안내 및 사용 신청
+                                    </p>
+                                </div>
+                                <div class="card">
+                                    <img src="/asset/img/장진수_교수님.png" alt="에코리움">
+                                    <p class="card-text">
+                                        대회 일정 및 참가 안내사항 공지
+                                    </p>
+                                </div>
+                            </div>
+                            <button class="slide-btn right" onclick="slideTo(currentIndex + 1)">&#10095;</button>
+                        </div>
+                    </section>
+                </div>
+
+                <button class="slide-btn right" onclick="slideTo(currentIndex + 1)">&#10095;</button>
+            </div>
+        </section>
+
+
+        <!-- 🔹 위치안내 -->
+        <section class="map-section">
+            <h2>비전대컴정과 위치안내</h2>
+            <div class="map-wrapper">
+                <iframe src="https://www.google.com/maps/embed?..." width="100%" height="300" style="border:0;"
+                    allowfullscreen="" loading="lazy"></iframe>
+                <p>전주 완산구 영무새 명루로</p>
+            </div>
+        </section>
+    </main>
+    <script>
+        let currentIndex = 0;
+        const wrapper = document.getElementById('infoCardsWrapper');
+        const originalCards = Array.from(wrapper.getElementsByClassName('card'));
+
+        function renderVisibleCards(centerIndex, direction = null) {
+            const cardsLength = originalCards.length;
+            const visibleCards = [
+                originalCards[(centerIndex - 1 + cardsLength) % cardsLength],
+                originalCards[centerIndex],
+                originalCards[(centerIndex + 1) % cardsLength],
+            ];
+
+            if (direction) {
+                wrapper.classList.add('animating');
+                wrapper.style.transition = 'transform 0.4s ease';
+                wrapper.style.transform = direction === 'left' ? 'translateX(100px)' : 'translateX(-100px)';
+            }
+
+            setTimeout(() => {
+                wrapper.innerHTML = '';
+                visibleCards.forEach((card, i) => {
+                    card.classList.remove('active');
+                    if (i === 1) card.classList.add('active');
+                    card.onclick = () => slideTo((centerIndex + i - 1 + cardsLength) % cardsLength, i === 0 ? 'left' : 'right');
+                    wrapper.appendChild(card);
+                });
+
+                if (direction) {
+                    requestAnimationFrame(() => {
+                        wrapper.style.transition = 'transform 0.4s ease';
+                        wrapper.style.transform = 'translateX(0)';
+                    });
+                }
+            }, direction ? 10 : 0);
+        }
+
+        function slideTo(index, direction) {
+            currentIndex = (index + originalCards.length) % originalCards.length;
+            renderVisibleCards(currentIndex, direction);
+        }
+
+        window.addEventListener('load', () => renderVisibleCards(currentIndex));
+
+        //메인배너
+        const bannerImages = [
+            "/asset/img/school_main.png",
+            "/asset/img/school_main.png",
+            "/asset/img/school_main.png"
+
+        ];
+        let currentBannerIndex = 0;
+        const bannerImg = document.getElementById('mainBannerImage');
+
+        setInterval(() => {
+            currentBannerIndex = (currentBannerIndex + 1) % bannerImages.length;
+            bannerImg.src = bannerImages[currentBannerIndex];
+        }, 5000);
+    </script>
+    </script>
+
 </body>
+<script src="/js/initHeader.js"></script>
+
 </html>

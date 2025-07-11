@@ -7,134 +7,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="/css/hero.css">
 </head>
-<style>
-    /* SECTION LAYOUT */
-    .info-section {
-        padding: 60px 5%;
-        background-color: #fff;
-        text-align: center;
-    }
 
-    .info-title {
-        font-size: 1.6rem;
-        font-weight: bold;
-        margin-bottom: 40px;
-        color: #222;
-    }
-
-    /* SLIDER CONTAINER */
-    .info-cards-container {
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-    }
-
-    .info-cards-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-        margin: 0 auto;
-        width: 100%;
-        padding: 0;
-        overflow: hidden;
-        transition: transform 2s ease;
-    }
-
-    .info-cards-wrapper.slide-left {
-        animation: slideLeft 2s ease;
-    }
-
-    .info-cards-wrapper.slide-right {
-        animation: slideRight 2s ease;
-    }
-
-    @keyframes slideLeft {
-        0% {
-            transform: translateX(100px);
-        }
-
-        100% {
-            transform: translateX(0);
-        }
-    }
-
-    @keyframes slideRight {
-        0% {
-            transform: translateX(-100px);
-        }
-
-        100% {
-            transform: translateX(0);
-        }
-    }
-
-    /* CARD STYLE */
-    .card {
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        overflow: hidden;
-        width: 100%;
-        max-width: 700px;
-        flex-shrink: 0;
-        transition: transform 0.3s ease, opacity 0.3s ease;
-        opacity: 0.2;
-        transform: scale(0.85);
-        cursor: pointer;
-    }
-
-    .card.active {
-        transform: scale(1);
-        opacity: 1;
-        z-index: 1;
-    }
-
-    .card img {
-        width: 100%;
-        height: auto;
-        display: block;
-    }
-
-    .card-text {
-        padding: 16px;
-        font-size: 0.95rem;
-        line-height: 1.5;
-        color: #333;
-    }
-
-    /* SLIDE BUTTONS */
-    .slide-btn {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background-color: rgba(255, 255, 255, 0.8);
-        border: none;
-        font-size: 1.5rem;
-        padding: 10px;
-        cursor: pointer;
-        z-index: 2;
-    }
-
-    .slide-btn.left {
-        left: 10px;
-    }
-
-    .slide-btn.right {
-        right: 10px;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-        .slide-btn {
-            display: none;
-        }
-
-        .card {
-            width: 90%;
-        }
-    }
-</style>
 
 <body>
     <div id="header-container"></div>
@@ -143,7 +16,32 @@
         <!-- 🔹 슬라이드 배너 -->
         <section class="main-slider">
             <div class="slider">
-                <img id="mainBannerImage" src="/asset/img/school_main.png" alt="메인 배너">
+                <img id="mainBannerImage" src="/asset/img/school_main.png" alt="메인 배너" />
+
+                <!-- ✅ 모바일 고정 메뉴 오버레이 -->
+                <div class="mobile-overlay-menu">
+                    <div class="overlay-item">
+                        <img src="/asset/img/logo.png" alt="잠금" />
+                        <p>학과소개</p>
+                    </div>
+                    <div class="overlay-item">
+                        <img src="/asset/img/logo.png" alt="잠금" />
+                        <p>대학생활</p>
+                    </div>
+                    <div class="overlay-item">
+                        <img src="/asset/img/logo.png" alt="잠금" />
+                        <p>산학협력단</p>
+                    </div>
+                    <div class="overlay-item">
+                        <img src="/asset/img/logo.png" alt="잠금" />
+                        <p>공식사이트</p>
+                    </div>
+                    <div class="overlay-item">
+                        <img src="/asset/img/logo.png" alt="잠금" />
+                        <p>로그인</p>
+                    </div>
+                </div>
+
                 <div class="dots">
                     <span class="dot"></span>
                     <span class="dot active"></span>
@@ -151,6 +49,7 @@
                 </div>
             </div>
         </section>
+
 
         <!-- 🔹 자주 찾는 정보 -->
         <section class="info-section">
@@ -250,9 +149,10 @@
 
         //메인배너
         const bannerImages = [
-            "/asset/img/박민식_교수님.png",
             "/asset/img/school_main.png",
-            "/asset/img/장진수_교수님.png"
+            "/asset/img/school_main.png",
+            "/asset/img/school_main.png"
+
         ];
         let currentBannerIndex = 0;
         const bannerImg = document.getElementById('mainBannerImage');

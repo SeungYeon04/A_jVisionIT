@@ -124,7 +124,6 @@ function closeModal() {
   customSelect.classList.remove("open");
 }
 
-//로그인상태 확인
 onAuthStateChanged(auth, (user) => {
   const loginDiv = document.querySelector(".header-top .login");
   if (!loginDiv) {

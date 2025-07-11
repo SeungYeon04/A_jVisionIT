@@ -1,53 +1,86 @@
-<link rel="stylesheet" href="/css/header.css" />
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+<!DOCTYPE html>
+<html lang="ko">
 
-  console.log("🔥 Firebase 모듈 로딩됨");
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Header with Firebase Auth</title>
+  <link rel="stylesheet" href="/css/header.css" />
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDzo8CrtIHYL43DgAGhbcMDjZL4k9d1oBQ",
-    authDomain: "jvisionit-web.firebaseapp.com",
-    projectId: "jvisionit-web",
-    storageBucket: "jvisionit-web.firebasestorage.app",
-    messagingSenderId: "288418922296",
-    appId: "1:288418922296:web:711d0f2fb061adefa74bcd",
-    measurementId: "G-DVQB1Y1M94"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyDzo8CrtIHYL43DgAGhbcMDjZL4k9d1oBQ",
+      authDomain: "jvisionit-web.firebaseapp.com",
+      projectId: "jvisionit-web",
+      storageBucket: "jvisionit-web.firebasestorage.app",
+      messagingSenderId: "288418922296",
+      appId: "1:288418922296:web:711d0f2fb061adefa74bcd",
+      measurementId: "G-DVQB1Y1M94"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  // 이후 login 함수 정의
-</script>
-<div style="position: fixed; top: 0px; width: 100%;height:auto; z-index: 1000;">
-  <!-- 로그인 영역 -->
-  <div class="header-top">
-    <div class="login" onclick="openLoginModal()">로그인</div>
-  </div>
-  <!-- 헤더 -->
-  <div class="header-bottom">
-    <!-- 로고 (왼쪽 고정) -->
-    <div class="logo">
-      <img src="/asset/img/visionLogo.png" onclick="window.location.href='hero.html'" alt="로고"/>
+    window.firebaseAuth = auth; // 외부 JS에서 접근할 수 있도록
+  </script>
+  <script type="module" src="/js/header.js"></script>
+</head>
+
+<body>
+  <div style="position: fixed; top: 0px; width: 100%; height: auto; z-index: 1000;">
+    <!-- 로그인 영역 -->
+    <div class="header-top">
+      <div class="login" onclick="openLoginModal()">로그인</div>
     </div>
-    <div class="header-right">
-      <div class="select-language">
-        <div class="custom-select-wrapper">
-          <div class="custom-select" id="custom-select">
-            <span id="selected-language">
-              <span class="lang-text">한국어</span>
-              <span class="arrow">▼</span>
-            </span>
-            <ul class="custom-options" id="custom-options">
-              <li data-value="ko">한국어</li>
-              <li data-value="en">English</li>
-              <li data-value="miyanma">မြန်မာ</li>
-            </ul>
+    <!-- 헤더 -->
+    <div class="header-bottom">
+      <div class="header-right-pc">
+        <div class="select-language">
+          <div class="custom-select-wrapper">
+            <div class="custom-select">
+              <span class="selected-language">
+                <span class="lang-text">한국어</span>
+                <span class="arrow">▼</span>
+              </span>
+              <ul class="custom-options">
+                <li data-value="ko">한국어</li>
+                <li data-value="en">English</li>
+                <li data-value="miyanma">မြန်မာ</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-      <!-- 햄버거 (오른쪽 고정, PC에선 숨김 처리됨) -->
+      <!-- 메뉴 -->
+      <div class="menu">
+        <div class="menu-item" onclick="location.href='facultyintro.html'">학과 소개</div>
+        <div class="menu-item">학과 생활</div>
+        <div class="menu-item">비전대 통합서비스</div>
+      </div>
+      <!-- 로고 (왼쪽 고정) -->
+      <div class="logo">
+        <img src="/asset/img/logo.png" onclick="window.location.href='hero.html'" alt="로고" />
+      </div>
+      <div class="header-right">
+        <div class="select-language">
+          <div class="custom-select-wrapper">
+            <div class="custom-select">
+              <span class="selected-language">
+                <span class="lang-text">한국어</span>
+                <span class="arrow">▼</span>
+              </span>
+              <ul class="custom-options">
+                <li data-value="ko">한국어</li>
+                <li data-value="en">English</li>
+                <li data-value="miyanma">မြန်မာ</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <div class="hamburger" onclick="toggleMenu()">
         <div></div>
         <div></div>
@@ -55,32 +88,9 @@
       </div>
     </div>
 
-    <!-- 메뉴 (가운데 정렬) -->
-    <div class="menu">
-      <div class="menu-item" onclick="location.href='facultyintro.html'">학과 소개</div>
-      <div class="menu-item">학과 생활</div>
-      <div class="menu-item">비전대 통합서비스</div>
-    </div>
-    <div class="header-right-pc">
-      <div class="select-language">
-        <div class="custom-select-wrapper">
-          <div class="custom-select" id="custom-select">
-            <span id="selected-language">
-              <span class="lang-text">한국어</span>
-              <span class="arrow">▼</span>
-            </span>
-            <ul class="custom-options" id="custom-options">
-              <li data-value="ko">한국어</li>
-              <li data-value="en">English</li>
-              <li data-value="miyanma">မြန်မာ</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--블랙 커버배경-->
+
+
     <div id="mega-backdrop"></div>
-    <!-- Mega Menu (고정된 전체 하위 메뉴) -->
     <div class="mega-menu" id="mega-menu">
       <div class="mega-column">
         <div class="menu-item" onclick="location.href='facultyintro.html'">학과 소개</div>
@@ -90,7 +100,7 @@
       </div>
       <div class="mega-column">
         <div class="column-title">학과 생활</div>
-        <div class="submenu-item">활동기록</div>
+        <div class="submenu-item" onclick="location.href='history.html'">활동기록</div>
         <div class="submenu-item">학과게시판</div>
         <div class="submenu-item">졸업작품</div>
       </div>
@@ -107,19 +117,17 @@
       </div>
     </div>
 
-    <!-- 모바일용 드롭다운 메뉴 -->
     <div class="menu-backdrop" id="menu-backdrop" onclick="toggleMenu()"></div>
     <div class="modal-menu" id="modal-menu">
       <div class="menu-item" onclick="location.href='facultyintro.html'">학과 소개</div>
       <div class="menu-item">학과 생활</div>
       <div class="menu-item">비전대 통합서비스</div>
-      <div class="menu-item">로그인</div>
+      <div class="menu-item" onclick="openLoginModal()">로그인</div>
     </div>
 
-    <!-- 로그인 모달 컨테이너 -->
     <div id="login-backdrop" style="display: none;"></div>
     <div id="login-modal-container"></div>
   </div>
-<script>
+</body>
 
-</script>
+</html>

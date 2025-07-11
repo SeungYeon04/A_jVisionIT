@@ -3,71 +3,57 @@ import {
   getDocs,
   query,
   orderBy,
-} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
-import { db } from "./firebase-init.js";
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { db, auth } from "./firebaseInit.js"; // firebase-init.js 사용
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const isLoggedIn = true;
-
+document.addEventListener("DOMContentLoaded", () => {
   const writeButtonContainer = document.getElementById(
     "write-button-container"
   );
-  if (isLoggedIn) {
-    const writeLink = document.createElement("a");
-    writeLink.href = "write.html";
-    writeLink.innerHTML = "<button>글쓰기</button>";
-    writeButtonContainer.appendChild(writeLink);
-  }
-
   const postListContainer = document.getElementById("post-list");
 
-  try {
-    const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-    const querySnapshot = await getDocs(q);
+  // 실시간으로 로그인 상태를 감지합니다.
+  onAuthStateChanged(auth, (user) => {
+    // user 객체가 있으면 로그인된 상태, 없으면 로그아웃 상태입니다.
+    if (user) {
+      // 로그인 상태: 글쓰기 버튼을 보여줍니다.
+      writeButtonContainer.innerHTML = `<a href="write.html"><button>글쓰기</button></a>`;
+    } else {
+      // 로그아웃 상태: 글쓰기 버튼을 숨깁니다.
+      writeButtonContainer.innerHTML = "";
+    }
+  });
 
-    let postListHTML = "";
-    querySnapshot.forEach((doc) => {
-      const post = doc.data();
-      const date = post.createdAt
-        ? post.createdAt
-            .toDate()
-            .toLocaleDateString("ko-KR", {
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-            })
-        : "날짜 없음";
-      postListHTML += `
-        <div class="post-item">
-          <a href="post.html?id=${doc.id}">
-            <span class="post-title">${post.title}</span>
-            <span class="post-date">${date}</span>
-          </a>
-        </div>
-      `;
-    });
+  // Firestore에서 게시물 목록을 불러오는 비동기 함수
+  const fetchPosts = async () => {
+    try {
+      const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
 
-    postListContainer.innerHTML = postListHTML;
-  } catch (error) {
-    console.error("게시물을 불러오는 중 오류 발생:", error);
-    postListContainer.innerHTML = "<p>게시물을 불러오는 데 실패했습니다.</p>";
-  }
+      let postListHTML = "";
+      querySnapshot.forEach((doc) => {
+        const post = doc.data();
+        const date = post.createdAt
+          ? post.createdAt.toDate().toLocaleDateString("ko-KR")
+          : "날짜 없음";
+        postListHTML += `
+          <div class="post-item">
+            <a href="post.html?id=${doc.id}">
+              <span class="post-title">${post.title}</span>
+              <span class="post-date">${date}</span>
+            </a>
+          </div>
+        `;
+      });
 
-  // 페이지네이션 버튼에 대한 이벤트 리스너 (실제 페이지네이션 로직은 별도 구현 필요)
-  const prevBtn = document.querySelector(".prev-btn");
-  const nextBtn = document.querySelector(".next-btn");
+      postListContainer.innerHTML = postListHTML;
+    } catch (error) {
+      console.error("게시물을 불러오는 중 오류 발생:", error);
+      postListContainer.innerHTML = "<p>게시물을 불러오는 데 실패했습니다.</p>";
+    }
+  };
 
-  if (prevBtn) {
-    prevBtn.addEventListener("click", () => {
-      alert("이전글 버튼 클릭!");
-      // 이전 페이지 로직 구현
-    });
-  }
-
-  if (nextBtn) {
-    nextBtn.addEventListener("click", () => {
-      alert("다음글 버튼 클릭!");
-      // 다음 페이지 로직 구현
-    });
-  }
+  // 함수 실행
+  fetchPosts();
 });

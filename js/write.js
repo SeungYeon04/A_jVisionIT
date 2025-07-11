@@ -1,15 +1,15 @@
-// v9에서 필요한 함수들을 import 합니다.
 import {
   collection,
   addDoc,
   serverTimestamp,
-} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import {
   ref,
   uploadBytes,
   getDownloadURL,
-} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-storage.js";
-import { db, storage } from "./firebase-init.js";
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+import { db, storage, auth } from "./firebaseInit.js"; // firebase-init.js 사용
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Quill 에디터 초기화
@@ -34,12 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const file = input.files[0];
       if (file) {
         try {
-          // --- Firebase Storage v9 방식으로 수정 ---
-          // 1. Storage 참조 만들기
           const storageRef = ref(storage, `images/${Date.now()}_${file.name}`);
-          // 2. 파일 업로드
           await uploadBytes(storageRef, file);
-          // 3. 다운로드 URL 가져오기
           const downloadURL = await getDownloadURL(storageRef);
 
           const range = quill.getSelection(true);
@@ -66,13 +62,21 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // 현재 로그인한 사용자가 있는지 확인
+    const user = auth.currentUser;
+    if (!user) {
+      alert("글을 작성하려면 로그인이 필요합니다.");
+      return;
+    }
+
     try {
-      // --- Firestore v9 방식으로 수정 ---
       await addDoc(collection(db, "posts"), {
         title: title,
         category: category,
         content: content,
-        createdAt: serverTimestamp(), // v9 방식의 타임스탬프 함수
+        createdAt: serverTimestamp(),
+        authorId: user.uid, // 작성자 UID 추가
+        authorName: user.email || "익명", // 작성자 이름 추가
       });
 
       alert("게시글 등록 성공!");

@@ -1,9 +1,13 @@
-// v9에서 필요한 함수들을 import 합니다.
+// post.js
+
+// 1. 로컬 설정 파일에서 db 객체를 먼저 가져옵니다. (login.js와 동일한 순서)
+import { db } from "./firebaseInit.js";
+
+// 2. 최신 버전(v10) SDK에서 필요한 함수들을 직접 가져옵니다.
 import {
   doc,
   getDoc,
-} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
-import { db } from "./firebase-init.js";
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // DOMPurify는 HTML에 직접 script 태그로 추가했으므로 import하지 않아도 됩니다.
 
@@ -12,7 +16,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const postMeta = document.getElementById("post-meta");
   const postContent = document.getElementById("post-content");
 
-  // 1. URL에서 게시글 ID 추출
   const params = new URLSearchParams(window.location.search);
   const postId = params.get("id");
 
@@ -22,21 +25,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    // --- Firestore 데이터 로드 부분 변경 (v9 방식) ---
-    // 2. ID를 이용해 Firestore에서 해당 문서의 참조(reference) 만들기
+    // ✅ v10 방식: doc() 함수로 문서 참조를 만듭니다.
     const docRef = doc(db, "posts", postId);
-    // 3. 참조를 이용해 실제 문서 데이터 가져오기
+
+    // ✅ v10 방식: getDoc() 함수로 문서를 가져옵니다.
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
       const post = docSnap.data();
 
-      // 4. 가져온 데이터를 HTML 요소에 채우기
       postTitle.textContent = post.title;
-      const postDate = post.createdAt.toDate().toLocaleDateString();
-      postMeta.textContent = `카테고리: ${post.category} | 작성일: ${postDate}`;
+      const postDate = post.createdAt
+        ? post.createdAt.toDate().toLocaleDateString()
+        : "날짜 없음";
+      const authorName = post.authorName || "작성자 없음";
+      postMeta.textContent = `카테고리: ${post.category} | 작성자: ${authorName} | 작성일: ${postDate}`;
 
-      // 5. ※ 중요: HTML 콘텐츠는 반드시 소독(Sanitize) 후 삽입
       const sanitizedContent = DOMPurify.sanitize(post.content);
       postContent.innerHTML = sanitizedContent;
     } else {

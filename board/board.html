@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/board.css" />
+    <title>게시판</title>
+  </head>
+  <body>
+    <div id="header-container"></div>
+    <div class="container">
+      <div id="write-button-container"></div>
+      <div id="post-list-container">
+        <div id="post-list"></div>
+      </div>
+      <main>
+        <div class="pagination">
+          <button class="prev-btn">이전글</button>
+          <button class="next-btn">다음글</button>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="/js/board.js"></script>
+    <script src="/js/initHeader.js"></script>
+  </body>
+</html>

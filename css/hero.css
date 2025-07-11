@@ -307,4 +307,9 @@ main {
   .card {
     width: 90%;
   }
+  
+  /* 모바일 메인 이미지 세로길이 축소 */
+  #mainBannerImage {
+    height: 400px;
+  }
 }

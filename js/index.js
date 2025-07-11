@@ -44,8 +44,8 @@
         //메인배너
         const bannerImages = [
             "/asset/img/school_main.png",
-            "/asset/img/school_main.png",
-            "/asset/img/school_main.png"
+            "/asset/img/AI임시01.png",
+            "/asset/img/AI임시02.png"
 
         ];
         let currentBannerIndex = 0;
@@ -54,4 +54,4 @@
         setInterval(() => {
             currentBannerIndex = (currentBannerIndex + 1) % bannerImages.length;
             bannerImg.src = bannerImages[currentBannerIndex];
-        }, 5000);
+        }, 2500);

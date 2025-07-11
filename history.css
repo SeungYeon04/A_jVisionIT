@@ -1,0 +1,428 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+  background-color: #ffffff;
+  color: #222;
+}
+
+/* 헤더 */
+.page-header {
+  display: flex;
+  align-items: center;
+  padding: 20px 30px;
+  border-bottom: 1px solid #ddd;
+}
+
+.department-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+}
+
+.header-text .page-title {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.last-update {
+  font-size: 0.875rem;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* 검색창 */
+.search-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 20px 30px;
+  background-color: #f8f8f8;
+}
+
+.search-bar select,
+.search-bar input,
+.search-bar button {
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.search-bar input {
+  width: 200px;
+}
+
+.search-bar button {
+  background-color: #ffffff;
+  color: #333;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-bar button:hover {
+  background-color: #e0e0e0;
+}
+
+/* 카드 리스트 */
+.activity-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.activity-card {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.activity-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.activity-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.activity-info {
+  padding: 15px;
+}
+
+.activity-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.activity-date {
+  font-size: 0.875rem;
+  color: #777;
+}
+
+.write-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #444444;
+  color: white;
+  border: none;
+  padding: 15px 20px;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.write-btn:hover {
+  background-color: #616161;
+  transform: translateY(-2px);
+}
+
+/* 모달 공통 스타일 */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal {
+  background-color: white;
+  padding: 30px 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  transform: translateY(-20px);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.modal-overlay.active .modal {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.modal h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.modal input[type="text"],
+.modal input[type="file"],
+.modal textarea {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.modal textarea {
+    resize: vertical;
+    min-height: 100px;
+    max-height: 300px;
+}
+
+.modal button {
+  width: 100%;
+  padding: 12px;
+  background-color: #444444;
+  color: white;
+  border: none;
+  font-size: 1.1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal button:hover {
+  background-color: #616161;
+}
+
+/* 글쓰기 모달 이미지 미리보기 래퍼 */
+.image-preview-wrapper {
+    position: relative;
+    width: 80%;
+    padding-bottom: 45%; /* 16:9 비율 유지 */
+    margin: 0 auto 10px;
+    display: none;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* 글쓰기 모달 이미지 미리보기 */
+.image-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지를 16:9 비율에 맞춰 자르고 채움 */
+    object-position: center;
+}
+
+.close-btn {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #888;
+  transition: color 0.2s ease;
+  z-index: 1001;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+/* 상세 보기 모달 스타일 */
+.detail-modal {
+    max-width: 600px;
+    padding: 20px;
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.detail-modal .close-btn {
+    position: absolute;
+    top: 15px; /* X 버튼 위치 조정 */
+    right: 15px;
+    z-index: 1001;
+}
+
+.detail-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.detail-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+    word-break: break-word;
+}
+
+.detail-content {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    text-align: center;
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.detail-date {
+    font-size: 0.9rem;
+    color: #999;
+    align-self: flex-end;
+    margin-right: 10px;
+}
+
+/* 각 게시글 카드 내 메뉴 스타일 */
+.card-actions-menu {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 5;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.activity-card:hover .card-actions-menu {
+    opacity: 1;
+    visibility: visible;
+}
+
+.kebab-icon {
+    font-size: 1.5rem;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 10px;
+    background-color: rgba(41, 41, 41, 0.8);
+    border-radius: 25%;
+    line-height: 0.5;
+    display: inline-block;
+    position: relative;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.kebab-icon:hover {
+    color: #c2c2c2;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 35px;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    flex-direction: column;
+    min-width: 100px;
+    overflow: hidden;
+}
+
+.dropdown-menu.active {
+    display: flex;
+}
+
+.dropdown-menu button {
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #333;
+    transition: background-color 0.2s ease;
+    border-radius: 0;
+}
+
+.dropdown-menu button:hover {
+    background-color: #f0f0f0;
+}
+
+/* 반응형 */
+@media screen and (max-width: 768px) {
+  .activity-container {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .search-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 15px 20px;
+  }
+
+  .search-bar input {
+      width: calc(100% - 16px);
+  }
+
+  .write-btn {
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+
+  .modal {
+    width: 90%;
+    padding: 20px 15px;
+  }
+
+  .detail-modal {
+      padding: 15px;
+      padding-top: 40px; /* 반응형에서도 X 버튼 공간 확보 */
+  }
+
+  .detail-modal .close-btn {
+      top: 10px; /* 반응형에서 X 버튼 위치 조정 */
+  }
+
+  .detail-title {
+      font-size: 1.5rem;
+  }
+
+  .detail-content {
+      font-size: 1rem;
+  }
+}

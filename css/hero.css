@@ -211,6 +211,9 @@ main {
   height: 24px;
   margin-bottom: 4px;
 }
+.arrow{
+  font-size: 12px;
+}
 
 /* PC에서는 숨김 */
 @media screen and (min-width: 768px) {
@@ -287,7 +290,6 @@ main {
   cursor: pointer;
   z-index: 2;
 }
-
 .slide-btn.left {
   left: 10px;
 }

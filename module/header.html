@@ -1,4 +1,25 @@
 <link rel="stylesheet" href="/css/header.css" />
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  console.log("🔥 Firebase 모듈 로딩됨");
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDzo8CrtIHYL43DgAGhbcMDjZL4k9d1oBQ",
+    authDomain: "jvisionit-web.firebaseapp.com",
+    projectId: "jvisionit-web",
+    storageBucket: "jvisionit-web.firebasestorage.app",
+    messagingSenderId: "288418922296",
+    appId: "1:288418922296:web:711d0f2fb061adefa74bcd",
+    measurementId: "G-DVQB1Y1M94"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // 이후 login 함수 정의
+</script>
 <div style="position: fixed; top: 0px; width: 100%;height:auto; z-index: 1000;">
   <!-- 로그인 영역 -->
   <div class="header-top">
@@ -99,3 +120,6 @@
     <div id="login-backdrop" style="display: none;"></div>
     <div id="login-modal-container"></div>
   </div>
+<script>
+
+</script>

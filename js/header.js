@@ -1,3 +1,6 @@
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { auth } from "./firebaseInit.js";
+
 function openLoginModal() {
   fetch('/module/login.html')
     .then(res => res.text())
@@ -20,6 +23,7 @@ function openLoginModal() {
       });
     });
 }
+window.openLoginModal = openLoginModal;
 
 function toggleMenu() {
   const modal = document.getElementById("modal-menu");
@@ -34,6 +38,7 @@ function toggleMenu() {
     backdrop.style.display = "block";
   }
 }
+window.toggleMenu = toggleMenu;
 
 const header = document.querySelector(".header-bottom");
 const menu = document.querySelector(".menu");
@@ -62,17 +67,16 @@ if (!header || !megaMenu) {
     }, 150);
   };
 
-
   menu.addEventListener("mouseenter", () => {
     isOver = true;
     openMenu();
   });
 
-    megaMenu.addEventListener("mouseenter", () => {
+  megaMenu.addEventListener("mouseenter", () => {
     isOver = true;
     openMenu();
-    });
-    megaMenu.addEventListener("mouseleave", () => {
+  });
+  megaMenu.addEventListener("mouseleave", () => {
     isOver = false;
     closeMenu();
   });
@@ -115,8 +119,26 @@ function changeLanguage(value) {
   console.log("🌐 언어 변경:", value);
   // 실제 언어 변경 로직 여기에 구현
 }
+
 function closeModal() {
-    customSelect.classList.remove("open");
+  customSelect.classList.remove("open");
+}
+
+onAuthStateChanged(auth, (user) => {
+  const loginDiv = document.querySelector(".header-top .login");
+  if (!loginDiv) {
+    return;  // ✅ 함수 내부에서의 return은 문제 없음
   }
 
+  if (user) {
+    const email = user.email || "회원";
+    loginDiv.textContent = `${email}`;
+    loginDiv.style.cursor = "default";
+    loginDiv.onclick = null;
+  } else {
+    loginDiv.textContent = "로그인";
+    loginDiv.style.cursor = "pointer";
+    loginDiv.onclick = () => openLoginModal();
+  }
+});
 

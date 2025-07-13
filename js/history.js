@@ -1,3 +1,23 @@
+//Firebase
+import { db, storage } from "./firebase.js";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+  serverTimestamp,
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+//혹시 모를 오류가 있을 수 있으니 한 번 실행
+fetchPostsFromFirebase();
+
 // 전역 변수 설정
 let activityPosts = JSON.parse(localStorage.getItem("posts")) || [];
 let currentEditPostId = null; // 현재 수정 중인 게시글의 ID를 저장할 변수
@@ -225,7 +245,7 @@ function closeModal() {
 }
 
 // 새 게시물 추가 함수 (ID 부여 로직 추가, 기존과 동일)
-function addNewPost() {
+async function addNewPost() {
   const title = newTitleInput.value.trim();
   const content = newContentInput.value.trim();
   const file = newImageFileInput.files[0];
@@ -235,30 +255,46 @@ function addNewPost() {
     return;
   }
 
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    const today = new Date();
-    const formattedDate = `${today.getFullYear()}.${String(
-      today.getMonth() + 1
-    ).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")}`;
+  try {
+    // Firebase Storage에 이미지 업로드
+    const storageRef = ref(storage, `activityImages/${Date.now()}_${file.name}`);
+    await uploadBytes(storageRef, file);
+    const imageUrl = await getDownloadURL(storageRef);
 
-    const newPost = {
-      id: Date.now(), // 고유 ID 부여
-      title: title,
-      content: content,
-      image: e.target.result,
-      date: formattedDate,
-    };
+    // Firestore에 글 저장
+    await addDoc(collection(db, "history"), {
+      title,
+      content,
+      image: imageUrl,
+      createdAt: serverTimestamp(),
+    });
 
-    activityPosts.unshift(newPost);
-    savePostsToLocalStorage(); // 로컬 스토리지 저장 함수 호출
-    renderPosts(activityPosts);
     closeModal();
-    updateLastModifiedDate();
-  };
-
-  reader.readAsDataURL(file);
+    alert("업로드 성공!");
+    fetchPostsFromFirebase(); // 목록 다시 불러오기
+  } catch (e) {
+    console.error("업로드 실패", e);
+    alert("업로드 중 오류 발생");
+  }
 }
+
+async function fetchPostsFromFirebase() {
+  const snapshot = await getDocs(collection(db, "history"));
+  const posts = [];
+  snapshot.forEach((docSnap) => {
+    const data = docSnap.data();
+    posts.push({
+      id: docSnap.id,
+      title: data.title,
+      content: data.content,
+      image: data.image,
+      date: data.createdAt?.toDate().toLocaleDateString("ko-KR") ?? "(날짜 없음)",
+    });
+  });
+  activityPosts = posts.sort((a, b) => b.date.localeCompare(a.date));
+  renderPosts(activityPosts);
+}
+
 
 // 게시물 수정 함수 (기존과 동일)
 function updatePost() {
@@ -300,16 +336,15 @@ function updatePost() {
 }
 
 // 게시물 삭제 함수 (기존과 동일)
-function deletePost(postId) {
-    if (!confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
-        return;
-    }
-
-    activityPosts = activityPosts.filter(post => post.id !== postId);
-    savePostsToLocalStorage();
-    renderPosts(activityPosts);
-    closeDetailModal(); // 상세 모달 닫기
-    updateLastModifiedDate();
+async function deletePost(postId) {
+  if (!confirm("정말로 이 게시글을 삭제하시겠습니까?")) return;
+  try {
+    await deleteDoc(doc(db, "activityPosts", postId));
+    fetchPostsFromFirebase();
+  } catch (e) {
+    console.error("삭제 오류", e);
+    alert("삭제 실패");
+  }
 }
 
 // 로컬 스토리지에 저장하는 유틸리티 함수 (기존과 동일)

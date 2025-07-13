@@ -31,6 +31,7 @@ body {
   left: 50px;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .logo img {
@@ -53,8 +54,6 @@ body {
 }
 
 .hamburger {
-  position: absolute;
-  right: 20px;
   display: none;
   flex-direction: column;
   gap: 5px;
@@ -138,10 +137,11 @@ body {
   align-items: center;
   justify-content: center;
 }
+
 /* ✅ Mega Menu 추가 영역 */
 .mega-menu {
   position: absolute;
-  top: 95px;
+  top:61px;
   left: 0;
   width: 100%;
   background-color: white;
@@ -149,20 +149,21 @@ body {
   padding: 20px 0;
   display: flex;
   justify-content: space-around;
-  z-index: 999;
-
-  /* ✅ 애니메이션용 초기 설정 */
+  z-index: 1100;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
 }
+
 #mega-backdrop {
   position: fixed;
-  top: 95px; /* 메뉴 아래만 어둡게 하려면 해당 위치부터 */
+  top: 95px;
+  /* 메뉴 아래만 어둡게 하려면 해당 위치부터 */
   left: 0;
   width: 100%;
-  height: calc(100% - 95px); /* 전체 아래 부분만 */
+  height: calc(100% - 95px);
+  /* 전체 아래 부분만 */
   background-color: rgba(0, 0, 0, 0.1);
   z-index: 998;
   opacity: 0;
@@ -174,7 +175,9 @@ body {
   opacity: 1;
   visibility: visible;
 }
+
 /* ✅ show 클래스 추가 시 활성화 */
+
 .mega-menu.show {
   opacity: 1;
   visibility: visible;
@@ -206,22 +209,133 @@ body {
   text-decoration: underline;
 }
 
+.header-right {
+  display: none;
+}
+#selected-language{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 5px;
+}
+#selected-language > .arrow{
+  font-size: 10px;
+  position: absolute;
+  right: 10px;
+  display: block !important;
+}
+
+
+.custom-select-wrapper {
+  position: relative;
+  width: 100px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
+
+.custom-select {
+  background: transparent;
+  color: #f9f9f9;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  user-select: none;
+}
+
+.custom-select.open {
+  border: 1px solid #6ac3f6;
+  outline: 1px solid #c0e4f9;
+  color: #ffffff;
+}
+
+.custom-options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100px;
+  padding-left: 0px;
+  background: #fff;
+  list-style: none;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-top: 4px;
+  z-index: 1000;
+  color: #333;
+}
+
+.custom-select.open .custom-options {
+  display: block;
+}
+
+.custom-options li {
+  display: block;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.custom-options li:hover {
+  background-color: #e0f3ff;
+}
+
+.custom-options li.selected {
+  background-color: #6ac3f6;
+  color: white;
+  padding: 8px 10px;
+}
+.header-right-pc{
+  display: block !important;
+  position: absolute;
+  right: 20px;
+}
 /* 반응형: 모바일용 */
 @media (max-width: 768px) {
   .header-bottom {
     height: 60px;
     justify-content: center;
   }
+.header-right-pc{
+  display: none !important;
+}
+  .header-top {
+    display: none;
+  }
 
   .logo img {
     width: 80px;
   }
 
+  .header-right {
+    display: flex;
+  }
+
   .hamburger {
     display: flex;
+    justify-content: center;
+  }
+
+  #mega-backdrop {
+    display: none;
   }
 
   .menu {
     display: none;
   }
+
+  .mega-menu {
+    display: none;
+  }
+ 
+
+  .header-right {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    right: 20px;
+    gap: 20px;
+  }
+
 }

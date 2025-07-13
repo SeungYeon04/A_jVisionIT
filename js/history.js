@@ -1,46 +1,28 @@
-//Firebase
-import { db, storage } from "./firebase.js";
+import { app, auth, db, storage } from "./firebaseInit.js";
 import {
-  collection,
-  addDoc,
-  getDocs,
-  deleteDoc,
-  doc,
-  serverTimestamp,
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  collection, addDoc, getDocs, query, orderBy, doc, updateDoc, deleteDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject,
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+  ref, uploadBytes, getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-//혹시 모를 오류가 있을 수 있으니 한 번 실행
-fetchPostsFromFirebase();
-
-// 전역 변수 설정
-let activityPosts = JSON.parse(localStorage.getItem("posts")) || [];
-let currentEditPostId = null; // 현재 수정 중인 게시글의 ID를 저장할 변수
-
-// DOM 요소 가져오기
-const lastUpdateDate = document.getElementById("lastUpdateDate");
+// DOM
 const activityContainer = document.getElementById("activityContainer");
+const lastUpdateDateElement = document.getElementById("lastUpdateDate");
 const searchInput = document.getElementById("searchInput");
 const searchButton = document.getElementById("searchButton");
-const writeButton = document.getElementById("writeButton");
 
-// 새 글 작성/수정 모달 요소
+const writeButton = document.getElementById("writeButton");
 const modalOverlay = document.getElementById("modalOverlay");
 const closeModalButton = document.getElementById("closeModalButton");
-const modalTitle = document.getElementById("modalTitle"); // 모달 제목 요소
 const newTitleInput = document.getElementById("newTitle");
 const newContentInput = document.getElementById("newContent");
 const newImageFileInput = document.getElementById("newImageFile");
 const imagePreviewWrapper = document.getElementById("imagePreviewWrapper");
 const imagePreview = document.getElementById("imagePreview");
-const addNewPostButton = document.getElementById("addNewPostButton"); // 등록/수정 버튼
+let addNewPostButton = document.getElementById("addNewPostButton");
 
-// 게시글 상세 보기 모달 요소
 const detailModalOverlay = document.getElementById("detailModalOverlay");
 const closeDetailModalButton = document.getElementById("closeDetailModalButton");
 const detailImage = document.getElementById("detailImage");
@@ -48,40 +30,128 @@ const detailTitle = document.getElementById("detailTitle");
 const detailContent = document.getElementById("detailContent");
 const detailDate = document.getElementById("detailDate");
 
-// 초기 설정
-updateLastModifiedDate(); // 마지막 업데이트 날짜 업데이트
-renderPosts(activityPosts); // 초기 게시물 렌더링
+let allPosts = [];
 
-// 검색 입력창에서 Enter 키 누를 때 검색
-searchInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    filterPosts();
+// 로그인 상태에 따라 글쓰기 버튼 표시
+onAuthStateChanged(auth, (user) => {
+  writeButton.style.display = user ? "block" : "none";
+});
+
+// 게시글 불러오기
+async function fetchPosts() {
+  activityContainer.innerHTML = '';
+  allPosts = [];
+  try {
+    const q = query(collection(db, "history"), orderBy("timestamp", "desc"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      allPosts.push({ id: doc.id, ...doc.data() });
+    });
+    displayPosts(allPosts);
+    updateLastUpdateDate();
+  } catch (e) {
+    console.error("불러오기 실패:", e);
+    activityContainer.innerHTML = "<p>게시글을 불러오는 데 실패했습니다.</p>";
+  }
+}
+
+// 게시글 카드 표시
+function displayPosts(postsToDisplay) {
+  activityContainer.innerHTML = '';
+  if (postsToDisplay.length === 0) {
+    activityContainer.innerHTML = "<p>게시글이 없습니다.</p>";
+    return;
+  }
+
+  postsToDisplay.forEach((post) => {
+    const postElement = document.createElement("div");
+    postElement.classList.add("activity-card");
+    postElement.dataset.id = post.id;
+
+    const postImage = post.imageUrl ? `<img src="${post.imageUrl}" alt="${post.title}" />` : '';
+
+    postElement.innerHTML = `
+      <div class="card-actions-menu">
+        <div class="kebab-icon">⋮</div>
+        <div class="dropdown-menu">
+          <button class="edit-button">수정</button>
+          <button class="delete-button">삭제</button>
+        </div>
+      </div>
+      ${postImage}
+      <div class="activity-info">
+        <h2 class="activity-title">${post.title}</h2>
+        <p class="activity-date">${post.date}</p>
+      </div>
+    `;
+
+    activityContainer.appendChild(postElement);
+
+    // 상세 모달
+    postElement.addEventListener("click", () => openDetailModal(post));
+
+    // 케밥 토글
+    const kebabIcon = postElement.querySelector(".kebab-icon");
+    const dropdownMenu = postElement.querySelector(".dropdown-menu");
+    kebabIcon.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle("active");
+      document.querySelectorAll(".dropdown-menu").forEach(menu => {
+        if (menu !== dropdownMenu) menu.classList.remove("active");
+      });
+    });
+
+    // 수정
+    const editButton = postElement.querySelector(".edit-button");
+    editButton.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openEditModal(post);
+    });
+
+    // 삭제
+    const deleteButton = postElement.querySelector(".delete-button");
+    deleteButton.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      if (confirm("정말 이 게시글을 삭제하시겠습니까?")) {
+        await deletePost(post.id);
+        fetchPosts();
+      }
+    });
+  });
+}
+
+// 마지막 업데이트
+function updateLastUpdateDate() {
+  if (allPosts.length > 0) {
+    const dateObj = new Date(allPosts[0].timestamp);
+    const formatted = `${dateObj.getFullYear()}.${(dateObj.getMonth() + 1).toString().padStart(2, '0')}.${dateObj.getDate().toString().padStart(2, '0')} ${dateObj.getHours().toString().padStart(2, '0')}:${dateObj.getMinutes().toString().padStart(2, '0')}`;
+    lastUpdateDateElement.textContent = `마지막 업데이트 ${formatted}`;
+  } else {
+    lastUpdateDateElement.textContent = `마지막 업데이트 -`;
+  }
+}
+
+// 새 글쓰기 열기
+writeButton.addEventListener("click", () => {
+  if (auth.currentUser) {
+    modalOverlay.classList.add("active");
+    resetModal();
+  } else {
+    alert("로그인 후 글쓰기가 가능합니다.");
   }
 });
 
-// 검색 버튼 클릭 시 검색
-searchButton.addEventListener("click", filterPosts);
-
-// 글쓰기 버튼 클릭 시 새 글 작성 모달 열기
-writeButton.addEventListener("click", () => openModal());
-
-// 새 글 작성/수정 모달 닫기 버튼 클릭 시 모달 닫기
-closeModalButton.addEventListener("click", closeModal);
-
-// 새 글 작성/수정 모달 오버레이 배경 클릭 시 모달 닫기 (모달 자체는 클릭해도 안 닫히게)
-modalOverlay.addEventListener("click", (e) => {
-  if (e.target.classList.contains('modal-overlay')) {
-    closeModal();
-  }
+closeModalButton.addEventListener("click", () => {
+  modalOverlay.classList.remove("active");
 });
 
-// 이미지 파일 변경 시 미리보기 업데이트
+// 이미지 미리보기
 newImageFileInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
   if (file) {
     const reader = new FileReader();
-    reader.onload = (event) => {
-      imagePreview.src = event.target.result;
+    reader.onload = (ev) => {
+      imagePreview.src = ev.target.result;
       imagePreviewWrapper.style.display = "block";
     };
     reader.readAsDataURL(file);
@@ -91,282 +161,136 @@ newImageFileInput.addEventListener("change", (e) => {
   }
 });
 
-// 등록/수정 버튼 클릭 시 (로직 변경 없음)
-addNewPostButton.addEventListener("click", () => {
-    if (currentEditPostId) { // 수정 모드일 경우
-        updatePost();
-    } else { // 새 글 작성 모드일 경우
-        addNewPost();
-    }
-});
+// 새 글 등록
+addNewPostButton.addEventListener("click", async () => {
+  const title = newTitleInput.value.trim();
+  const content = newContentInput.value.trim();
+  const imageFile = newImageFileInput.files[0];
 
-// 게시글 상세 보기 모달 닫기 버튼 클릭 시 모달 닫기
-closeDetailModalButton.addEventListener("click", closeDetailModal);
+  if (!imageFile) return alert("이미지를 첨부해주세요.");
 
-// 게시글 상세 보기 모달 오버레이 배경 클릭 시 모달 닫기 (모달 자체는 클릭해도 안 닫히게)
-detailModalOverlay.addEventListener("click", (e) => {
-    if (e.target.classList.contains('modal-overlay')) {
-        closeDetailModal();
-    }
-});
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('ko-KR', {
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit'
+  }).replace(/\. /g, '.').replace(/\.$/, '');
 
-document.addEventListener('click', (e) => {
-    document.querySelectorAll('.dropdown-menu.active').forEach(menu => {
-        const kebabIcon = menu.previousElementSibling; 
-        if (!kebabIcon || (!kebabIcon.contains(e.target) && !menu.contains(e.target))) {
-            menu.classList.remove('active');
-        }
+  try {
+    const storageRef = ref(storage, `images/${Date.now()}_${imageFile.name}`);
+    const uploadTask = await uploadBytes(storageRef, imageFile);
+    const imageUrl = await getDownloadURL(uploadTask.ref);
+
+    await addDoc(collection(db, "history"), {
+      title, content, imageUrl,
+      date: dateStr,
+      timestamp: now.toISOString()
     });
+
+    alert("등록되었습니다.");
+    modalOverlay.classList.remove("active");
+    fetchPosts();
+  } catch (e) {
+    alert("등록 실패: " + (e.message || e));
+  }
 });
 
-// 마지막 업데이트 날짜 업데이트 함수
-function updateLastModifiedDate() {
-  const today = new Date();
-  const formattedDate = `${today.getFullYear()}. ${String(today.getMonth() + 1).padStart(2, '0')}. ${String(today.getDate()).padStart(2, '0')}`;
-  lastUpdateDate.textContent = `마지막 업데이트 ${formattedDate}`;
+// 상세 모달
+function openDetailModal(post) {
+  detailTitle.textContent = post.title || '(제목 없음)';
+  detailContent.textContent = post.content || '(내용 없음)';
+  detailDate.textContent = post.date || '-';
+  if (post.imageUrl) {
+    detailImage.src = post.imageUrl;
+    detailImage.style.display = "block";
+  } else {
+    detailImage.src = "";
+    detailImage.style.display = "none";
+  }
+  detailModalOverlay.classList.add("active");
 }
 
-// 게시물 목록 렌더링 함수
-function renderPosts(posts) {
-  activityContainer.innerHTML = ""; 
+closeDetailModalButton.addEventListener("click", () => {
+  detailModalOverlay.classList.remove("active");
+});
 
-  if (posts.length === 0) {
-    activityContainer.innerHTML = "<p style='text-align:center; color:#aaa; padding: 20px;'>검색 결과가 없거나, 아직 작성된 게시물이 없습니다.</p>";
-    return;
-  }
+// 수정 모달
+function openEditModal(post) {
+  modalOverlay.classList.add("active");
+  newTitleInput.value = post.title;
+  newContentInput.value = post.content;
+  imagePreview.src = post.imageUrl || "";
+  imagePreviewWrapper.style.display = post.imageUrl ? "block" : "none";
+  newImageFileInput.value = "";
 
-  posts.forEach((post) => {
-    const card = document.createElement("div");
-    card.className = "activity-card";
-    card.dataset.id = post.id; // 게시글의 고유 ID 저장
+  const newButton = addNewPostButton.cloneNode(true);
+  addNewPostButton.parentNode.replaceChild(newButton, addNewPostButton);
+  addNewPostButton = newButton;
+  addNewPostButton.textContent = "수정하기";
 
-    card.innerHTML = `
-      <img src="${post.image}" alt="${post.title} 활동 이미지">
-      <div class="activity-info">
-        <h3 class="activity-title">${post.title}</h3>
-        <p class="activity-date">${post.date}</p>
-      </div>
-      <div class="card-actions-menu">
-          <span class="kebab-icon">&#x22EE;</span>
-          <div class="dropdown-menu">
-              <button class="edit-card-btn">수정</button>
-              <button class="delete-card-btn">삭제</button>
-          </div>
-      </div>
-    `;
+  addNewPostButton.addEventListener("click", async () => {
+    const newTitle = newTitleInput.value.trim();
+    const newContent = newContentInput.value.trim();
+    const newImage = newImageFileInput.files[0];
+    let newImageUrl = post.imageUrl;
 
-    // 카드 클릭 시 상세 모달 열기 이벤트 리스너 (기존과 동일)
-    card.addEventListener("click", (e) => {
-        // 클릭된 요소가 케밥 메뉴나 드롭다운 메뉴 내부가 아닐 때만 상세 모달 열기
-        if (!e.target.closest('.card-actions-menu')) {
-            openDetailModal(post);
-        }
+    if (newImage) {
+      const storageRef = ref(storage, `images/${Date.now()}_${newImage.name}`);
+      const uploadTask = await uploadBytes(storageRef, newImage);
+      newImageUrl = await getDownloadURL(uploadTask.ref);
+    }
+
+    await updateDoc(doc(db, "history", post.id), {
+      title: newTitle,
+      content: newContent,
+      imageUrl: newImageUrl,
+      timestamp: new Date().toISOString(),
+      date: new Date().toLocaleDateString('ko-KR', {
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit'
+      }).replace(/\. /g, '.').replace(/\.$/, '')
     });
 
-    activityContainer.appendChild(card);
-
-    // 케밥 메뉴 및 드롭다운 버튼 이벤트 리스너 추가
-    const kebabIcon = card.querySelector('.kebab-icon');
-    const dropdownMenu = card.querySelector('.dropdown-menu');
-    const editBtn = card.querySelector('.edit-card-btn');
-    const deleteBtn = card.querySelector('.delete-card-btn');
-
-    kebabIcon.addEventListener('click', (e) => {
-        e.stopPropagation(); // 카드 클릭 이벤트가 부모로 전파되지 않도록 방지
-        // 다른 열려있는 드롭다운 메뉴 닫기
-        document.querySelectorAll('.dropdown-menu.active').forEach(menu => {
-            if (menu !== dropdownMenu) {
-                menu.classList.remove('active');
-            }
-        });
-        dropdownMenu.classList.toggle('active'); // 현재 드롭다운 메뉴 토글
-    });
-
-    editBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeDetailModal();
-        openModal(post); // 수정 모드로 글쓰기 모달 열기
-        dropdownMenu.classList.remove('active'); // 드롭다운 메뉴 닫기
-    });
-
-    deleteBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        deletePost(post.id); // 게시글 삭제 함수 호출
-        dropdownMenu.classList.remove('active'); // 드롭다운 메뉴 닫기
-    });
+    alert("수정되었습니다.");
+    modalOverlay.classList.remove("active");
+    fetchPosts();
   });
 }
 
-// 게시물 필터링 함수 (기존과 동일)
-function filterPosts() {
-  const keyword = searchInput.value.toLowerCase().trim();
-  console.log("검색 함수 호출됨! 키워드:", keyword);
-  const filtered = activityPosts.filter((post) =>
-    post.title.toLowerCase().includes(keyword) || (post.content && post.content.toLowerCase().includes(keyword))
-  );
-  console.log("필터링된 게시물:", filtered);
-  renderPosts(filtered);
-}
-
-// 새 글 작성/수정 모달 열기 함수 (기존과 동일)
-function openModal(postToEdit = null) {
-  modalOverlay.classList.add('active');
-
-  if (postToEdit) { // 수정 모드
-    modalTitle.textContent = "글 수정";
-    addNewPostButton.textContent = "수정하기";
-    newTitleInput.value = postToEdit.title;
-    newContentInput.value = postToEdit.content;
-    newImageFileInput.value = ""; // 파일 입력 필드 초기화 (새 이미지 선택 유도)
-    imagePreview.src = postToEdit.image;
-    imagePreviewWrapper.style.display = "block";
-    currentEditPostId = postToEdit.id; // 현재 수정 중인 게시글 ID 설정
-  } else { // 새 글 작성 모드
-    modalTitle.textContent = "새 글 작성";
-    addNewPostButton.textContent = "등록하기";
-    newTitleInput.value = "";
-    newContentInput.value = "";
-    newImageFileInput.value = ""; // 파일 입력 필드 초기화
-    imagePreview.src = "";
-    imagePreviewWrapper.style.display = "none";
-    currentEditPostId = null; // 새 글 작성 모드일 때는 ID 초기화
+// 삭제
+async function deletePost(postId) {
+  try {
+    await deleteDoc(doc(db, "history", postId));
+  } catch (e) {
+    alert("삭제 실패: " + (e.message || e));
   }
 }
 
-// 새 글 작성/수정 모달 닫기 함수 (기존과 동일)
-function closeModal() {
-  modalOverlay.classList.remove('active');
+// 검색
+searchButton.addEventListener("click", performSearch);
+searchInput.addEventListener("keyup", (e) => {
+  if (e.key === "Enter") performSearch();
+});
+
+function performSearch() {
+  const keyword = searchInput.value.toLowerCase().trim();
+  const result = keyword
+    ? allPosts.filter(p =>
+        p.title.toLowerCase().includes(keyword) ||
+        p.content.toLowerCase().includes(keyword)
+      )
+    : allPosts;
+  displayPosts(result);
+}
+
+// 모달 초기화
+function resetModal() {
   newTitleInput.value = "";
   newContentInput.value = "";
   newImageFileInput.value = "";
   imagePreview.src = "";
   imagePreviewWrapper.style.display = "none";
-  currentEditPostId = null; // 모달 닫을 때 현재 수정 ID 초기화
+  addNewPostButton.textContent = "등록하기";
 }
 
-// 새 게시물 추가 함수 (ID 부여 로직 추가, 기존과 동일)
-async function addNewPost() {
-  const title = newTitleInput.value.trim();
-  const content = newContentInput.value.trim();
-  const file = newImageFileInput.files[0];
-
-  if (!title || !content || !file) {
-    alert("제목, 내용, 이미지를 모두 입력해주세요!");
-    return;
-  }
-
-  try {
-    // Firebase Storage에 이미지 업로드
-    const storageRef = ref(storage, `activityImages/${Date.now()}_${file.name}`);
-    await uploadBytes(storageRef, file);
-    const imageUrl = await getDownloadURL(storageRef);
-
-    // Firestore에 글 저장
-    await addDoc(collection(db, "history"), {
-      title,
-      content,
-      image: imageUrl,
-      createdAt: serverTimestamp(),
-    });
-
-    closeModal();
-    alert("업로드 성공!");
-    fetchPostsFromFirebase(); // 목록 다시 불러오기
-  } catch (e) {
-    console.error("업로드 실패", e);
-    alert("업로드 중 오류 발생");
-  }
-}
-
-async function fetchPostsFromFirebase() {
-  const snapshot = await getDocs(collection(db, "history"));
-  const posts = [];
-  snapshot.forEach((docSnap) => {
-    const data = docSnap.data();
-    posts.push({
-      id: docSnap.id,
-      title: data.title,
-      content: data.content,
-      image: data.image,
-      date: data.createdAt?.toDate().toLocaleDateString("ko-KR") ?? "(날짜 없음)",
-    });
-  });
-  activityPosts = posts.sort((a, b) => b.date.localeCompare(a.date));
-  renderPosts(activityPosts);
-}
-
-
-// 게시물 수정 함수 (기존과 동일)
-function updatePost() {
-    const title = newTitleInput.value.trim();
-    const content = newContentInput.value.trim();
-    const file = newImageFileInput.files[0]; // 새 이미지 파일
-
-    if (!title || !content) {
-        alert("제목과 내용을 모두 입력해주세요!");
-        return;
-    }
-
-    const postIndex = activityPosts.findIndex(post => post.id === currentEditPostId);
-
-    if (postIndex === -1) {
-        alert("수정할 게시글을 찾을 수 없습니다.");
-        return;
-    }
-
-    const reader = new FileReader();
-    if (file) { // 새 이미지가 첨부되었을 경우
-        reader.onload = function (e) {
-            activityPosts[postIndex].title = title;
-            activityPosts[postIndex].content = content;
-            activityPosts[postIndex].image = e.target.result; // 새 이미지로 업데이트
-            savePostsToLocalStorage();
-            renderPosts(activityPosts);
-            closeModal();
-        };
-        reader.readAsDataURL(file);
-    } else { // 새 이미지가 첨부되지 않았을 경우
-        activityPosts[postIndex].title = title;
-        activityPosts[postIndex].content = content;
-        // 이미지는 기존 이미지 유지
-        savePostsToLocalStorage();
-        renderPosts(activityPosts);
-        closeModal();
-    }
-}
-
-// 게시물 삭제 함수 (기존과 동일)
-async function deletePost(postId) {
-  if (!confirm("정말로 이 게시글을 삭제하시겠습니까?")) return;
-  try {
-    await deleteDoc(doc(db, "activityPosts", postId));
-    fetchPostsFromFirebase();
-  } catch (e) {
-    console.error("삭제 오류", e);
-    alert("삭제 실패");
-  }
-}
-
-// 로컬 스토리지에 저장하는 유틸리티 함수 (기존과 동일)
-function savePostsToLocalStorage() {
-    try {
-        localStorage.setItem("posts", JSON.stringify(activityPosts));
-    } catch (e) {
-        console.error("로컬 스토리지 저장 실패:", e);
-        alert("데이터 저장에 실패했습니다. (저장 공간 부족)");
-    }
-}
-
-// 게시글 상세 보기 모달 열기 함수 (수정/삭제 버튼 관련 로직 제거)
-function openDetailModal(post) {
-    detailImage.src = post.image;
-    detailTitle.textContent = post.title;
-    detailContent.textContent = post.content;
-    detailDate.textContent = post.date;
-    detailModalOverlay.classList.add('active');
-}
-
-// 게시글 상세 보기 모달 닫기 함수
-function closeDetailModal() {
-    detailModalOverlay.classList.remove('active');
-}
+// 초기 로딩
+document.addEventListener("DOMContentLoaded", fetchPosts);

@@ -35,7 +35,7 @@ body {
 }
 
 .logo img {
-  width: 75px;
+  width: 150px;
   height: auto;
   object-fit: contain;
 }
@@ -143,7 +143,7 @@ body {
 /* ✅ Mega Menu 추가 영역 */
 .mega-menu {
   position: absolute;
-  top:60px;
+  top:90px;
   left: 0;
   width: 100%;
   background-color: white;
@@ -224,9 +224,9 @@ a{
   padding-left: 5px;
 }
 #selected-language > .arrow{
-  font-size: 10px;
+  font-size: 9px;
   position: absolute;
-  right: 10px;
+  right: 30px;
   display: block !important;
 }
 
@@ -270,6 +270,12 @@ a{
   z-index: 1000;
   color: #333;
 }
+#selected-language > .arrow {
+    font-size: 9px;
+    position: absolute;
+    right: 12px;
+    display: block !important;
+}
 
 .custom-select.open .custom-options {
   display: block;
@@ -294,7 +300,9 @@ a{
 .header-right-pc{
   display: block !important;
   position: absolute;
-  right: 20px;
+  right: 10px;
+  border: 1px solid #a1a1a1;
+  border-radius: 10px;
 }
 /* 반응형: 모바일용 */
 @media (max-width: 768px) {
@@ -310,12 +318,15 @@ a{
   }
 
   .logo img {
-    width: 75px;
+    width: 150px;
   }
 
   .header-right {
     display: flex;
+      border: 1px solid #a1a1a1;
+  border-radius: 10px;
   }
+
 
   .hamburger {
     display: flex;

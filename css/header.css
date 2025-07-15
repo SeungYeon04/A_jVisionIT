@@ -18,7 +18,7 @@ body {
 
 /* 하단 헤더 영역 */
 .header-bottom {
-  background-color: #888;
+  background-color: #6d6d6dab;
   display: flex;
   align-items: center;
   justify-content: center;

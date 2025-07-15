@@ -121,8 +121,17 @@ document.querySelectorAll(".custom-select").forEach(customSelect => {
 
 function changeLanguage(value) {
   console.log("🌐 언어 변경:", value);
-  // TODO: 실제 언어 변경 로직
+
+  // 모든 선택된 언어 영역 업데이트
+  document.querySelectorAll('#selected-language .lang-text').forEach(el => {
+    if (value === 'ko') el.textContent = '한국어';
+    else if (value === 'en') el.textContent = 'English';
+    else if (value === 'miyanma') el.textContent = 'မြန်မာ';
+  });
+
+  // TODO: 추가적인 언어 변경 로직이 있다면 여기에
 }
+
 
 function closeModal(customSelect) {
   customSelect.classList.remove("open");

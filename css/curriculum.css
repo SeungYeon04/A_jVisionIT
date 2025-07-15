@@ -1,0 +1,60 @@
+/* 연도별 섹션 카드 */
+.year-card {
+  background-color: #ffffff;
+  margin-bottom: 30px;
+  /* 왼쪽 테두리로 연도를 명확하게 구분 */
+  border-top: 1px solid #333;
+}
+
+.year-card h2 {
+  font-size: 22px;
+  margin-left: 20px;
+  font-weight: 600;
+}
+/* 학년별 카드 그리드 (반응형) */
+
+.grade-grid {
+  display: grid;
+  /* 모바일(기본): 1열로 쌓기 */
+  grid-template-columns: 1fr;
+}
+
+/* 화면이 768px 이상일 때 (태블릿, 데스크탑) */
+
+@media screen and (min-width: 768px) {
+  .grade-grid {
+    /* 768px 이상에서는 항상 2열로 고정 */
+    grid-template-columns: repeat(auto-fit, minmax(530px, 1fr));
+  }
+}
+
+/* 학년별 카드 */
+.grade-card {
+  padding: 20px 0 20px 0;
+  text-align: center;
+}
+
+.grade-card h3 {
+  font-size: 20px;
+  margin: 0 0 15px 0;
+  color: #333;
+}
+
+.img-wrapper {
+  height: 420px; /* 고정 높이 유지 */
+  overflow: hidden;
+  background: #fafafa;
+}
+
+.img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 이 속성이 핵심입니다. */
+  display: block; /* 이미지 하단 여백 제거 */
+  transition: transform 0.3s ease;
+}
+
+/* 이미지에 마우스 올리면 확대 효과 */
+.img-wrapper:hover img {
+  transform: scale(1.05);
+}

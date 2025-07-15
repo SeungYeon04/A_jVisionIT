@@ -101,6 +101,14 @@ body {
   letter-spacing: 0.2px;
 }
 
+.project_link{
+    text-decoration: none;
+    color: rgb(207, 207, 207);
+}
+.project_link:hover{
+    color: skyblue;
+}
+
 @media (max-width: 900px) {
   .project-visual-full {
     aspect-ratio: 16 / 9;

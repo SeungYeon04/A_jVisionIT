@@ -1,6 +1,7 @@
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { auth } from "./firebaseInit.js";
 
+// 🔹 로그인 모달 열기
 function openLoginModal() {
   fetch('/module/login.html')
     .then(res => res.text())
@@ -25,6 +26,7 @@ function openLoginModal() {
 }
 window.openLoginModal = openLoginModal;
 
+// 🔹 모바일 메뉴 토글
 function toggleMenu() {
   const modal = document.getElementById("modal-menu");
   const backdrop = document.getElementById("menu-backdrop");
@@ -40,6 +42,7 @@ function toggleMenu() {
 }
 window.toggleMenu = toggleMenu;
 
+// 🔹 Mega Menu 설정
 const header = document.querySelector(".header-bottom");
 const menu = document.querySelector(".menu");
 const megaMenu = document.getElementById("mega-menu");
@@ -119,6 +122,7 @@ document.querySelectorAll(".custom-select").forEach(customSelect => {
   });
 });
 
+// 🔹 언어 변경 함수 (구현 예정)
 function changeLanguage(value) {
   console.log("🌐 언어 변경:", value);
 
@@ -137,13 +141,14 @@ function closeModal(customSelect) {
   customSelect.classList.remove("open");
 }
 
+// 🔹 Firebase 로그인 상태 확인
 onAuthStateChanged(auth, (user) => {
   const loginDiv = document.querySelector(".header-top .login");
   if (!loginDiv) return;
 
   if (user) {
     const email = user.email || "회원";
-    loginDiv.textContent = `${email}`;
+    loginDiv.textContent = `${email}님`;
     loginDiv.style.cursor = "default";
     loginDiv.onclick = null;
   } else {

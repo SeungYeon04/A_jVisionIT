@@ -1,0 +1,15 @@
+{
+    "project": [
+        {
+            "mainImgSrc": "/asset/img/project_test.png",
+            "sectionImgSrc": "/asset/img/project_test.png",
+            "footerAuthorImgSrc": "/asset/img/박민식_교수님.png",
+            "designerName": "박민식",
+            "developerName": "박형석",
+            "projectTitle": "내 개인 포트폴리오",
+            "projectLink": "https://b-hyoung.kr",
+            "titleDescription": "내 포트폴리오를 만들어 멀리멀리 퍼져서 네카라쿠배 다뿌셔<br/>이거보고 누가좀 나 뽑아줬으면 좋겠다.<br/>",
+            "projectDetailDescription": "웹 개발자 박형석의 포트폴리오 사이트입니다.<br/>주로 프론트엔드/백엔드 프로젝트, UI/UX 디자인, 개인 및 팀 프로젝트를 소개하며<br/>React, Kotlin, Spring Boot, Firebase 등 다양한 기술 스택을 다루었습니다.<br/>"
+        }
+    ]
+}

@@ -1,0 +1,360 @@
+.project-section-image img {
+  width: 70%;
+  height: 50%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+
+}
+
+body,
+html {
+  min-width: 408px;
+}
+
+.nav a.active-nav::after {
+  bottom: -4px !important;
+}
+
+.project-main-img {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+.project-main-img.loaded {
+  padding-top: 63px;
+  opacity: 0.7;
+}
+
+.project-section-description {
+  text-align: center;
+  margin: 0 auto;
+  color: #fff;
+}
+
+.project-description {
+  text-align: left;
+}
+
+.project-section-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.project-section-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #ccc;
+  margin-bottom: 40px;
+  margin: 0 auto;
+  margin-top: 30px;
+  padding: 0 15%;
+  font-weight: bold;
+}
+
+.project-author-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.project-author-card img {
+  width: 120px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.project-author-name {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  font-family: 'Pretendard', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.project-header {
+  text-align: center;
+  margin-top: 48px;
+  margin-bottom: 32px;
+}
+
+.project-title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  letter-spacing: -1px;
+}
+
+.project-meta {
+  color: #aaa;
+  font-size: 1.1rem;
+  letter-spacing: 0.2px;
+}
+
+.project_link {
+  text-decoration: none;
+  color: rgb(207, 207, 207);
+}
+
+.project_link:hover {
+  color: skyblue;
+}
+
+@media (max-width: 900px) {
+  .project-visual-full {
+    aspect-ratio: 16 / 9;
+    max-width: 100vw;
+    margin: 40px auto 30px auto;
+  }
+
+  .project-main-img.loaded {
+    padding-top: 33px;
+    opacity: 0.7;
+  }
+
+  .project-visual-img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .footer-author-name {
+    font-size: 2.5rem !important;
+    margin-right: 0px !important;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    width: max-content;
+  }
+}
+
+.footer-author-name {
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .project-header {
+    margin-top: 24px;
+    margin-bottom: 18px;
+  }
+
+  .project-title {
+    font-size: 1.3rem;
+  }
+
+  .footer-author-name {
+    margin-right: 0px;
+    width: max-content;
+  }
+
+  .project-visual-full {
+    max-width: 100vw;
+    margin: 20px auto 16px auto;
+  }
+
+  .project-visual-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .project-desc-section {
+    padding: 32px 0 32px 0;
+  }
+}
+
+/* Tile Layout Styles */
+.tile-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+/* Tile Item (Poster) */
+.tile-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.tile-item:hover {
+  transform: scale(1.02);
+}
+
+.tile-item img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-bottom: 1px solid #333;
+}
+
+.tile-item h3 {
+  margin: 1rem 0;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .tile-item img {
+    height: 180px;
+  }
+
+  .tile-item h3 {
+    font-size: 1rem;
+  }
+}
+
+.project-visual-section {
+  width: 100%;
+  margin: 30px auto 40px auto;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.project-main-img {
+  top: 30%;
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+}
+
+.project-info-section {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 15%;
+  background-color: #000;
+  color: #fff;
+  margin-bottom: 60px;
+}
+
+.project-client {
+  font-size: 1.2rem;
+  color: #aaa;
+  margin-bottom: 1rem;
+}
+
+.project-description {
+  font-size: 1.1rem;
+  color: #ccc;
+  line-height: 1.3;
+  margin-bottom: 5px;
+}
+
+.project-footer {
+  text-align: center;
+  color: #aaa;
+  font-size: 0.85rem;
+}
+
+.footer-divider {
+  border-top: 1px solid #666;
+  margin: 40px auto;
+  width: 90%;
+  max-width: 1000px;
+}
+
+.project-footer-author {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 20px;
+}
+
+.footer-author-img {
+  width: 20rem;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.footer-author-img:hover {
+  opacity: 0.85;
+}
+
+.footer-author-name {
+  font-size: 3.8rem;
+  font-weight: 800;
+  color: #fff;
+  margin-right: 30px;
+}
+
+.footer-author-name:hover {
+  color: #fabc11;
+}
+
+.poster-nav {
+  font-size: 3rem;
+  color: #ccc;
+  cursor: pointer;
+  padding: 20px 15px;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.poster-nav:hover {
+  color: #fabc11;
+}
+
+.footer-icons {
+  display: flex;
+  justify-content: center;
+  gap: 30rem;
+  font-size: 1.2rem;
+  margin: 20px 0;
+}
+
+
+.footer-copyright {
+  margin-top: auto;
+  padding-top: 30px;
+  padding-bottom: 50px;
+  text-align: center;
+  color: #aaa;
+  font-size: 0.85rem;
+  background-color: black;
+}
+
+@media (max-width: 600px) {
+  .footer-author-name {
+    font-size: 1.3rem;
+  }
+
+  .footer-icons {
+    gap: 1rem;
+    font-size: 1rem;
+  }
+
+  .project-footer-author {
+    flex-direction: column !important;
+  }
+}
+
+/* 이미지 아래 텍스트 */
+
+.v-text,
+.m-text,
+.s-text,
+.ppt-text {
+  margin: 5% auto;
+  max-width: 80%;
+}

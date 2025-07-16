@@ -1,22 +1,27 @@
-<link rel="stylesheet" href="/css/header.css" />
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+<!DOCTYPE html>
+<html lang="ko">
 
-  console.log("🔥 Firebase 모듈 로딩됨");
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Header with Firebase Auth</title>
+  <link rel="stylesheet" href="/css/header.css" />
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDzo8CrtIHYL43DgAGhbcMDjZL4k9d1oBQ",
-    authDomain: "jvisionit-web.firebaseapp.com",
-    projectId: "jvisionit-web",
-    storageBucket: "jvisionit-web.firebasestorage.app",
-    messagingSenderId: "288418922296",
-    appId: "1:288418922296:web:711d0f2fb061adefa74bcd",
-    measurementId: "G-DVQB1Y1M94"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyDzo8CrtIHYL43DgAGhbcMDjZL4k9d1oBQ",
+      authDomain: "jvisionit-web.firebaseapp.com",
+      projectId: "jvisionit-web",
+      storageBucket: "jvisionit-web.firebasestorage.app",
+      messagingSenderId: "288418922296",
+      appId: "1:288418922296:web:711d0f2fb061adefa74bcd",
+      measurementId: "G-DVQB1Y1M94"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
   // 이후 login 함수 정의
 </script>
@@ -29,7 +34,7 @@
   <div class="header-bottom">
     <!-- 로고 (왼쪽 고정) -->
     <div class="logo">
-      <img src="/asset/img/logo.png" onclick="window.location.href='/hero.html'" alt="로고" />
+      <img src="/asset/img/visionLogo.png" onclick="window.location.href='/index.html'" alt="로고" />
     </div>
     <div class="header-right">
       <div class="select-language">
@@ -48,11 +53,11 @@
         </div>
       </div>
       <!-- 햄버거 (오른쪽 고정, PC에선 숨김 처리됨) -->
-      <div class="hamburger" onclick="toggleMenu()">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
+    </div>
+    <div class="hamburger" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
 
     <!-- 메뉴 (가운데 정렬) -->
@@ -60,6 +65,7 @@
       <div class="menu-item">학과 소개</div>
       <div class="menu-item" onclick="location.href='/board/board.html'">학과 생활</div>
       <div class="menu-item">비전대 통합서비스</div>
+      <div class="menu-item" onclick="location.href='projectDetail.html'">졸업작품디테일</div>
     </div>
     <div class="header-right-pc">
       <div class="select-language">
@@ -80,7 +86,6 @@
     </div>
     <!--블랙 커버배경-->
     <div id="mega-backdrop"></div>
-    <!-- Mega Menu (고정된 전체 하위 메뉴) -->
     <div class="mega-menu" id="mega-menu">
       <div class="mega-column">
         <div class="menu-item">학과 소개</div>
@@ -90,7 +95,7 @@
       </div>
       <div class="mega-column">
         <div class="column-title">학과 생활</div>
-        <div class="submenu-item" onclick="location.href='/history.html'">활동기록</div>
+        <div class="submenu-item" onclick="location.href='../history.html'">활동기록</div>
         <div class="submenu-item">학과게시판</div>
         <div class="submenu-item">졸업작품</div>
       </div>
@@ -100,26 +105,30 @@
       </div>
       <div class="mega-column">
         <div class="column-title">주요사이트</div>
-        <div class="submenu-item">비전대 LMS</div>
-        <div class="submenu-item">비전대 포털</div>
-        <div class="submenu-item">강의평가</div>
-        <div class="submenu-item">구글클래스룸</div>
+        <a class="submenu-item" href="https://jvision.ac.kr/vision/main/" target="_blank">비전대 홈페이지</a>
+        <div class="submenu-item" onclick="window.open('https:/\/lms.jvision.ac.kr/ilos/main/main_form.acl')">비전대 LMS
+        </div>
+        <a class="submenu-item" href="https://portal.jvision.ac.kr/user/login.face?destination=%2Fportal" target="_blank" rel="noopener noreferrer">비전대 포털</a>
+        <!--
+        <div class="submenu-item" onclick="window.open('https:/\/classroom.google.com/')">구글클래스룸</div>
+        -->
       </div>
     </div>
 
-    <!-- 모바일용 드롭다운 메뉴 -->
+    <!--  onclick="location.href='facultyintro.html'" 처럼 
+      경로 달면 돠고 나중에 보고 대표경로로 최대한 달면 됨 -->
     <div class="menu-backdrop" id="menu-backdrop" onclick="toggleMenu()"></div>
     <div class="modal-menu" id="modal-menu">
       <div class="menu-item">학과 소개</div>
       <div class="menu-item">학과 생활</div>
       <div class="menu-item">비전대 통합서비스</div>
-      <div class="menu-item">로그인</div>
+      <div class="menu-item" onclick="location.href='projectDetail.html'">졸업작품디테일</div>
+      <div class="menu-item" onclick="openLoginModal()">로그인</div>
     </div>
 
-    <!-- 로그인 모달 컨테이너 -->
     <div id="login-backdrop" style="display: none;"></div>
     <div id="login-modal-container"></div>
   </div>
-<script>
+</body>
 
-</script>
+</html>

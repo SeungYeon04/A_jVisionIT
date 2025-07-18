@@ -65,7 +65,7 @@ function renderProjects(year) {
                     <a href="${detailPageLink}" class="project-item">
                         <img src="${project.mainImgSrc}" alt="${project.projectTitle}" class="thumbnail" loading="lazy">
                         <div class="project-info">
-                            <p class="project-name">${project.designerName}</p>
+                            <p class="project-name">${project.developerName}</p>
                             <p class="project-id">${project.developerId}</p>
                         </div>
                     </a>

@@ -3,23 +3,23 @@ import { auth } from "./firebaseInit.js";
 
 // 🔹 로그인 모달 열기
 function openLoginModal() {
-  fetch('/module/login.html')
-    .then(res => res.text())
-    .then(html => {
-      const backdrop = document.getElementById('login-backdrop');
-      const container = document.getElementById('login-modal-container');
+  fetch("/module/login.html")
+    .then((res) => res.text())
+    .then((html) => {
+      const backdrop = document.getElementById("login-backdrop");
+      const container = document.getElementById("login-modal-container");
 
       container.innerHTML = html;
-      backdrop.style.display = 'block';
-      container.style.display = 'block';
+      backdrop.style.display = "block";
+      container.style.display = "block";
 
       backdrop.onclick = () => {
-        container.innerHTML = '';
-        backdrop.style.display = 'none';
-        container.style.display = 'none';
+        container.innerHTML = "";
+        backdrop.style.display = "none";
+        container.style.display = "none";
       };
 
-      import('/js/login.js').then(module => {
+      import("/js/login.js").then((module) => {
         module.initLoginModal();
       });
     });
@@ -87,7 +87,7 @@ if (!header || !megaMenu) {
 }
 
 // ✅ custom-select 여러 개 처리
-document.querySelectorAll(".custom-select").forEach(customSelect => {
+document.querySelectorAll(".custom-select").forEach((customSelect) => {
   const selected = customSelect.querySelector("#selected-language");
   const selectedText = selected.querySelector(".lang-text");
   const options = customSelect.querySelectorAll(".custom-options li");
@@ -96,8 +96,8 @@ document.querySelectorAll(".custom-select").forEach(customSelect => {
     customSelect.classList.toggle("open");
   });
 
-  options.forEach(option => {
-    option.addEventListener("click", e => {
+  options.forEach((option) => {
+    option.addEventListener("click", (e) => {
       e.stopPropagation();
 
       const value = option.getAttribute("data-value");
@@ -106,7 +106,7 @@ document.querySelectorAll(".custom-select").forEach(customSelect => {
       selectedText.textContent = text;
       customSelect.classList.remove("open");
 
-      options.forEach(opt => opt.classList.remove("selected"));
+      options.forEach((opt) => opt.classList.remove("selected"));
       option.classList.add("selected");
 
       closeModal(customSelect);
@@ -115,7 +115,7 @@ document.querySelectorAll(".custom-select").forEach(customSelect => {
   });
 
   // 바깥 클릭 시 닫기
-  document.addEventListener("click", e => {
+  document.addEventListener("click", (e) => {
     if (!customSelect.contains(e.target)) {
       customSelect.classList.remove("open");
     }
@@ -126,15 +126,14 @@ function changeLanguage(value) {
   console.log("🌐 언어 변경:", value);
 
   // 모든 선택된 언어 영역 업데이트
-  document.querySelectorAll('#selected-language .lang-text').forEach(el => {
-    if (value === 'ko') el.textContent = '한국어';
-    else if (value === 'en') el.textContent = 'English';
-    else if (value === 'miyanma') el.textContent = 'မြန်မာ';
+  document.querySelectorAll("#selected-language .lang-text").forEach((el) => {
+    if (value === "ko") el.textContent = "한국어";
+    else if (value === "en") el.textContent = "English";
+    else if (value === "miyanma") el.textContent = "မြန်မာ";
   });
 
   // TODO: 추가적인 언어 변경 로직이 있다면 여기에
 }
-
 
 function closeModal(customSelect) {
   customSelect.classList.remove("open");
@@ -156,3 +155,19 @@ onAuthStateChanged(auth, (user) => {
     loginDiv.onclick = () => openLoginModal();
   }
 });
+
+function activateTransitions() {
+  const megaMenu = document.getElementById("mega-menu");
+  if (megaMenu) {
+    megaMenu.classList.add("transition-ready");
+  }
+}
+
+// 현재 문서의 로딩 상태를 확인합니다.
+if (document.readyState === "complete") {
+  // 이미 로딩이 완료되었다면, 함수를 즉시 실행합니다.
+  activateTransitions();
+} else {
+  // 아직 로딩 중이라면, load 이벤트가 발생했을 때 실행하도록 등록합니다.
+  window.addEventListener("load", activateTransitions);
+}

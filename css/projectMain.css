@@ -1,0 +1,81 @@
+/* 기본 스타일 (제공된 테마 기반) */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  color: #fff;
+  font-family: "Pretendard", sans-serif;
+  overflow: hidden; /* 스크롤바 제거 */
+}
+
+/* 메인 컨테이너: Flexbox를 사용하여 컨텐츠를 수직/수평 중앙 정렬 */
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* 연도 네비게이션 (2025 2026 2027) */
+.year-navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem; /* 연도 사이의 간격 */
+}
+
+.year-link {
+  font-size: 6rem; /* 큼직한 폰트 사이즈 */
+  font-weight: 800; /* 굵은 글씨체 */
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* 연도 링크에 마우스 호버 시 효과 */
+.year-link:hover {
+  color: #fabc11; /* 제공된 CSS의 호버 색상 중 하나 */
+  transform: scale(1.05); /* 약간 확대되는 효과 */
+}
+
+/* 하단 푸터 스타일 */
+.main-footer {
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
+  text-align: center;
+  color: #aaa; /* 제공된 CSS의 보조 텍스트 색상 */
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* --- 반응형 디자인 --- */
+
+/* 태블릿 사이즈 (e.g., 768px 이하) */
+@media (max-width: 768px) {
+  .year-link {
+    font-size: 4.5rem;
+  }
+  .year-navigation {
+    gap: 3rem;
+  }
+}
+
+/* 모바일 사이즈 (e.g., 480px 이하) */
+@media (max-width: 480px) {
+  /* 모바일에서는 연도를 세로로 나열 */
+  .year-navigation {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .year-link {
+    font-size: 4rem;
+  }
+  .main-footer {
+    font-size: 0.75rem;
+  }
+}

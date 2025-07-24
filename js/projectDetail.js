@@ -90,10 +90,6 @@ function slide(direction) {
         setTimeout(() => {
             currentIndex = newIndex;
             renderSlider();
-            // 아래 줄은 제거합니다. renderSlider()가 DOM을 새로 그리기 때문에 필요 없습니다.
-            // trackImgs.forEach(img => {
-            //   img.classList.remove("fade-out", "clicked-next", "clicked-prev", "outgoing");
-            // });
         }, 650);
     }
 }

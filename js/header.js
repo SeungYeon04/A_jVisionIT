@@ -70,15 +70,25 @@ if (!header || !megaMenu) {
     }, 150);
   };
 
-  menu.addEventListener("mouseenter", () => {
-    isOver = true;
-    openMenu();
-  });
+  function activateOpenMenu() {
+    setTimeout(() => {
+      menu.addEventListener("mouseenter", () => {
+        isOver = true;
+        openMenu();
+      });
 
-  megaMenu.addEventListener("mouseenter", () => {
-    isOver = true;
-    openMenu();
-  });
+      megaMenu.addEventListener("mouseenter", () => {
+        isOver = true;
+        openMenu();
+      });
+    }, 50);
+  }
+
+  if (document.readyState === "complete") {
+    activateOpenMenu();
+  } else {
+    window.addEventListener("load", activateOpenMenu);
+  }
 
   megaMenu.addEventListener("mouseleave", () => {
     isOver = false;
@@ -157,10 +167,12 @@ onAuthStateChanged(auth, (user) => {
 });
 
 function activateTransitions() {
-  const megaMenu = document.getElementById("mega-menu");
-  if (megaMenu) {
-    megaMenu.classList.add("transition-ready");
-  }
+  setTimeout(() => {
+    const megaMenu = document.getElementById("mega-menu");
+    if (megaMenu) {
+      megaMenu.classList.add("transition-ready");
+    }
+  }, 50);
 }
 
 // 현재 문서의 로딩 상태를 확인합니다.

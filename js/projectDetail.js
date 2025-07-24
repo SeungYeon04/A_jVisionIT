@@ -37,7 +37,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       // 텍스트
       document.querySelector(".footer-author-name").textContent =
-        project.designerName;
+        project.developerName;
       document.querySelector(".project-title").textContent =
         project.projectTitle;
       document.querySelector(".project-client").textContent =

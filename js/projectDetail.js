@@ -1,56 +1,36 @@
 // 1. Firebase 관련 모듈 및 설정 가져오기
-import { app, db } from "./firebaseInit.js"; // firebaseInit.js 경로에 맞게 수정해주세요.
+import { app, db } from "./firebaseInit.js";
 import {
   doc,
   getDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+// subimg 변수를 전역 스코프에 선언합니다.
+// Firestore 데이터 로드 전에는 빈 배열로 초기화합니다.
 let subimg = {
-  img :[
-    "asset/img/project_test.png",
-    "asset/img/school_main.png",
-    "asset/img/박형석.png",
-    "asset/img/AI임시01.png",
-    "asset/img/poster.png",
-  ]
-}
-
-window.addEventListener("DOMContentLoaded", async () => {
-  // 2. 현재 URL에서 'id' 파라미터 값 가져오기
-  const params = new URLSearchParams(window.location.search);
-  const projectId = params.get("id");
-
-  // projectId가 없으면 페이지에 오류 메시지를 표시하고 중단
-  if (!projectId) {
-    document.body.innerHTML =
-      '<h1 style="text-align: center; margin-top: 50px;">잘못된 접근입니다.</h1>';
-    console.error("URL에서 프로젝트 ID를 찾을 수 없습니다.");
-    return;
-  }
-
-  try {
-    // 3. Firestore에서 projectId와 일치하는 문서 가져오기
-    // 'project'는 컬렉션 이름, projectId는 문서 ID입니다.
-    const docRef = doc(db, "project", projectId);
-    const docSnap = await getDoc(docRef);
-
-    // 4. 일치하는 프로젝트가 있을 경우에만 페이지 내용을 채웁니다.
-    if (docSnap.exists()) {
-      const project = docSnap.data();
-
-      // 이미지
-      document.querySelector(".project-main-img").src = project.mainImgSrc;
-      document.querySelector(".footer-author-img").src =
-        project.footerAuthorImgSrc;
-
-        ////////////////
+  img: [],
+};
 
 let currentIndex = 0;
-
-const track = document.getElementById("slider-track");
+let track; // #slider-track 요소를 담을 변수 (DOMContentLoaded 이후 할당)
 
 function renderSlider() {
+  // track 요소가 아직 할당되지 않았다면 여기서 할당합니다.
+  if (!track) {
+    track = document.getElementById("slider-track");
+    if (!track) {
+      console.error("슬라이더 트랙 HTML 요소를 찾을 수 없습니다! (ID: slider-track)");
+      return;
+    }
+  }
+
   track.innerHTML = "";
+
+  // 이미지가 없으면 렌더링하지 않습니다.
+  if (subimg.img.length === 0) {
+    console.warn("슬라이더에 표시할 이미지가 없습니다.");
+    return;
+  }
 
   const prevImg = currentIndex > 0 ? subimg.img[currentIndex - 1] : null;
   const currentImg = subimg.img[currentIndex];
@@ -87,44 +67,67 @@ function renderSlider() {
     track.appendChild(img);
   }
 }
+
 function slide(direction) {
-  const newIndex = currentIndex + direction;
-  if (newIndex >= 0 && newIndex < subimg.img.length) {
-    const trackImgs = document.querySelectorAll("#slider-track img");
+    const newIndex = currentIndex + direction;
+    if (newIndex >= 0 && newIndex < subimg.img.length) {
+        const trackImgs = document.querySelectorAll("#slider-track img");
 
-    // 중앙 이미지: prev가 없으면 0번, 있으면 1번
-    const currentImg = trackImgs.length === 3 ? trackImgs[1] : trackImgs[0];
-    const clickedImg = document.querySelector(
-      direction > 0 ? ".next-preview" : ".prev-preview"
-    );
+        const currentImg = trackImgs.length === 3 ? trackImgs[1] : trackImgs[0];
+        const clickedImg = document.querySelector(
+            direction > 0 ? ".next-preview" : ".prev-preview"
+        );
+        const oppositeImg = document.querySelector(
+            direction > 0 ? ".prev-preview" : ".next-preview"
+        );
 
-    // 반대쪽 preview 이미지 즉시 숨김
-    const oppositeImg = document.querySelector(
-      direction > 0 ? ".prev-preview" : ".next-preview"
-    );
-    if (oppositeImg) oppositeImg.classList.add("fade-out");
+        if (oppositeImg) oppositeImg.classList.add("fade-out");
+        if (clickedImg) {
+            clickedImg.classList.add(direction > 0 ? "clicked-next" : "clicked-prev");
+        }
+        if (currentImg) currentImg.classList.add("outgoing");
 
-    // 클릭된 이미지 → 커지며 이동
- if (clickedImg) {
-  clickedImg.classList.add(direction > 0 ? "clicked-next" : "clicked-prev");
+        setTimeout(() => {
+            currentIndex = newIndex;
+            renderSlider();
+            // 아래 줄은 제거합니다. renderSlider()가 DOM을 새로 그리기 때문에 필요 없습니다.
+            // trackImgs.forEach(img => {
+            //   img.classList.remove("fade-out", "clicked-next", "clicked-prev", "outgoing");
+            // });
+        }, 650);
+    }
 }
 
-    // 기존 중앙 이미지 → 작아지며 밀림
-    if (currentImg) currentImg.classList.add("outgoing");
+// DOMContentLoaded 이벤트 리스너
+window.addEventListener("DOMContentLoaded", async () => {
+  const params = new URLSearchParams(window.location.search);
+  const projectId = params.get("id");
 
-    // 일정 시간 후 슬라이드 교체
-    setTimeout(() => {
-      currentIndex = newIndex;
-      renderSlider();
-    }, 400);
+  if (!projectId) {
+    document.body.innerHTML =
+      '<h1 style="text-align: center; margin-top: 50px;">잘못된 접근입니다.</h1>';
+    console.error("URL에서 프로젝트 ID를 찾을 수 없습니다.");
+    return;
   }
-}
-renderSlider();
 
+  try {
+    const docRef = doc(db, "project", projectId);
+    const docSnap = await getDoc(docRef);
 
-      ///////////////////////
+    if (docSnap.exists()) {
+      const project = docSnap.data();
 
-      // 텍스트
+      document.querySelector(".project-main-img").src = project.mainImgSrc;
+      document.querySelector(".footer-author-img").src =
+        project.footerAuthorImgSrc;
+
+      // --- subimg 로드 핵심 부분 ---
+        subimg.img = project.sectionImage; // Firestore에서 가져온 이미지를 subimg.img에 할당
+      // --- subimg 로드 끝 ---
+
+      // Firestore 데이터 로드 및 subimg.img 할당 후 슬라이더를 초기 렌더링합니다.
+      renderSlider();
+
       document.querySelector(".footer-author-name").textContent =
         project.developerName;
       document.querySelector(".project-title").textContent =
@@ -132,17 +135,14 @@ renderSlider();
       document.querySelector(".project-client").textContent =
         "개발자 : " + project.developerName;
 
-      // 프로젝트 설명
       document.querySelector(".project-description").innerHTML = `
         ${project.titleDescription}
         Link : <a class="project_link" href="${project.projectLink}" target="_blank">${project.projectLink}</a>
       `;
 
-      // 상세 설명
       document.querySelector(".project-section-text").innerHTML =
         project.projectDetailDescription;
     } else {
-      // 일치하는 프로젝트가 없을 경우 에러 메시지를 표시합니다.
       document.querySelector(".project-title").textContent =
         "프로젝트를 찾을 수 없습니다.";
       console.error(`ID가 ${projectId}인 프로젝트를 찾을 수 없습니다.`);

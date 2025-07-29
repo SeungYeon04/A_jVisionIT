@@ -1,30 +1,32 @@
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { auth } from "./firebaseInit.js";
 
+// 🔹 로그인 모달 열기
 function openLoginModal() {
-  fetch('/module/login.html')
-    .then(res => res.text())
-    .then(html => {
-      const backdrop = document.getElementById('login-backdrop');
-      const container = document.getElementById('login-modal-container');
+  fetch("/module/login.html")
+    .then((res) => res.text())
+    .then((html) => {
+      const backdrop = document.getElementById("login-backdrop");
+      const container = document.getElementById("login-modal-container");
 
       container.innerHTML = html;
-      backdrop.style.display = 'block';
-      container.style.display = 'block';
+      backdrop.style.display = "block";
+      container.style.display = "block";
 
       backdrop.onclick = () => {
-        container.innerHTML = '';
-        backdrop.style.display = 'none';
-        container.style.display = 'none';
+        container.innerHTML = "";
+        backdrop.style.display = "none";
+        container.style.display = "none";
       };
 
-      import('/js/login.js').then(module => {
+      import("/js/login.js").then((module) => {
         module.initLoginModal();
       });
     });
 }
 window.openLoginModal = openLoginModal;
 
+// 🔹 모바일 메뉴 토글
 function toggleMenu() {
   const modal = document.getElementById("modal-menu");
   const backdrop = document.getElementById("menu-backdrop");
@@ -40,6 +42,7 @@ function toggleMenu() {
 }
 window.toggleMenu = toggleMenu;
 
+// 🔹 Mega Menu 설정
 const header = document.querySelector(".header-bottom");
 const menu = document.querySelector(".menu");
 const megaMenu = document.getElementById("mega-menu");
@@ -67,72 +70,93 @@ if (!header || !megaMenu) {
     }, 150);
   };
 
-  menu.addEventListener("mouseenter", () => {
-    isOver = true;
-    openMenu();
-  });
+  function activateOpenMenu() {
+    setTimeout(() => {
+      menu.addEventListener("mouseenter", () => {
+        isOver = true;
+        openMenu();
+      });
 
-  megaMenu.addEventListener("mouseenter", () => {
-    isOver = true;
-    openMenu();
-  });
+      megaMenu.addEventListener("mouseenter", () => {
+        isOver = true;
+        openMenu();
+      });
+    }, 50);
+  }
+
+  if (document.readyState === "complete") {
+    activateOpenMenu();
+  } else {
+    window.addEventListener("load", activateOpenMenu);
+  }
+
   megaMenu.addEventListener("mouseleave", () => {
     isOver = false;
     closeMenu();
   });
 }
-const customSelect = document.getElementById("custom-select");
-const selected = document.getElementById("selected-language");
-const selectedText = selected.querySelector(".lang-text"); // ✅ 추가
-const options = customSelect.querySelectorAll(".custom-options li");
 
-customSelect.addEventListener("click", () => {
-  customSelect.classList.toggle("open");
-});
+// ✅ custom-select 여러 개 처리
+document.querySelectorAll(".custom-select").forEach((customSelect) => {
+  const selected = customSelect.querySelector("#selected-language");
+  const selectedText = selected.querySelector(".lang-text");
+  const options = customSelect.querySelectorAll(".custom-options li");
 
-options.forEach(option => {
-  option.addEventListener("click", e => {
-    e.stopPropagation();
-
-    const value = option.getAttribute("data-value");
-    const text = option.textContent;
-
-    selectedText.textContent = text; // ✅ 텍스트만 바꿈 (아이콘 유지)
-    customSelect.classList.remove("open");
-
-    options.forEach(opt => opt.classList.remove("selected"));
-    option.classList.add("selected");
-
-    closeModal();
-    changeLanguage(value);
+  customSelect.addEventListener("click", () => {
+    customSelect.classList.toggle("open");
   });
-});
 
-// 바깥 클릭 시 닫기
-document.addEventListener("click", e => {
-  if (!customSelect.contains(e.target)) {
-    customSelect.classList.remove("open");
-  }
+  options.forEach((option) => {
+    option.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      const value = option.getAttribute("data-value");
+      const text = option.textContent;
+
+      selectedText.textContent = text;
+      customSelect.classList.remove("open");
+
+      options.forEach((opt) => opt.classList.remove("selected"));
+      option.classList.add("selected");
+
+      closeModal(customSelect);
+      changeLanguage(value);
+    });
+  });
+
+  // 바깥 클릭 시 닫기
+  document.addEventListener("click", (e) => {
+    if (!customSelect.contains(e.target)) {
+      customSelect.classList.remove("open");
+    }
+  });
 });
 
 function changeLanguage(value) {
   console.log("🌐 언어 변경:", value);
-  // 실제 언어 변경 로직 여기에 구현
+
+  // 모든 선택된 언어 영역 업데이트
+  document.querySelectorAll("#selected-language .lang-text").forEach((el) => {
+    if (value === "ko") el.textContent = "한국어";
+    else if (value === "en") el.textContent = "English";
+    else if (value === "miyanma") el.textContent = "မြန်မာ";
+  });
+
+  // TODO: 추가적인 언어 변경 로직이 있다면 여기에
 }
 
-function closeModal() {
+function closeModal(customSelect) {
   customSelect.classList.remove("open");
 }
 
+// 🔹 Firebase 로그인 상태 확인
 onAuthStateChanged(auth, (user) => {
   const loginDiv = document.querySelector(".header-top .login");
-  if (!loginDiv) {
-    return;  // ✅ 함수 내부에서의 return은 문제 없음
-  }
+  if (!loginDiv) return;
 
   if (user) {
     const email = user.email || "회원";
-    loginDiv.textContent = `${email}`;
+    loginDiv.textContent = `${email}님`;
     loginDiv.style.cursor = "default";
     loginDiv.onclick = null;
   } else {
@@ -142,3 +166,20 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
+function activateTransitions() {
+  setTimeout(() => {
+    const megaMenu = document.getElementById("mega-menu");
+    if (megaMenu) {
+      megaMenu.classList.add("transition-ready");
+    }
+  }, 50);
+}
+
+// 현재 문서의 로딩 상태를 확인합니다.
+if (document.readyState === "complete") {
+  // 이미 로딩이 완료되었다면, 함수를 즉시 실행합니다.
+  activateTransitions();
+} else {
+  // 아직 로딩 중이라면, load 이벤트가 발생했을 때 실행하도록 등록합니다.
+  window.addEventListener("load", activateTransitions);
+}

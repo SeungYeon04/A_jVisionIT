@@ -1,0 +1,124 @@
+/* 기본 스타일 및 폰트 설정 */
+body {
+    background-color: #121212; /* 어두운 검정 배경 */
+    color: #ffffff;
+    font-family: 'Pretendard', sans-serif;
+    padding-top: 90px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* 헤더 스타일 */
+header {
+    padding: 15px 50px;
+    border-bottom: 1px solid #444;
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-weight: 600;
+    font-size: 1.2em;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+}
+
+.main-nav ul a {
+    color: #aaa;
+    font-weight: 500;
+}
+
+/* 메인 콘텐츠 영역 */
+main {
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 0 50px;
+}
+
+/* 연도 선택 네비게이션 */
+.year-nav {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.year-nav a {
+    margin-left: 20px;
+    font-size: 1.1em;
+    color: #888;
+}
+
+.year-nav a.active {
+    color: orange;
+    font-weight: bold;
+}
+
+/* 메인 타이틀 */
+.main-title {
+    text-align: center;
+    font-size: 2.5em;
+    font-weight: 700;
+    margin-bottom: 50px;
+}
+
+/* 프로젝트 그리드 레이아웃 */
+.project-grid {
+    display: grid;
+    /* 화면 크기에 따라 2~4개의 컬럼으로 자동 조절 */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 40px 30px;
+}
+
+/* 개별 프로젝트 아이템 */
+.project-item .thumbnail {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* 1:1 비율 유지 */
+    background-color: #333; /* 이미지 로딩 전 배경색 */
+    border-radius: 20px;
+    object-fit: cover; /* 이미지가 비율에 맞게 잘리도록 설정 */
+    transition: transform 0.3s ease;
+}
+
+.project-item:hover .thumbnail {
+    transform: scale(1.05); /* 마우스 호버 시 약간 확대되는 효과 */
+}
+
+.project-info {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.project-name {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin: 0;
+}
+
+.project-id {
+    font-size: 0.9em;
+    color: #aaa;
+    margin-top: 5px;
+}
+
+/* 푸터 */
+.project-footer {
+    text-align: center;
+    padding: 40px 0;
+    margin-top: 80px;
+    color: #777;
+    border-top: 1px solid #444;
+}

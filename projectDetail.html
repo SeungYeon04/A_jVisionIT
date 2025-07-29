@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>프로젝트 상세</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/projectDetail.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+<style>
+  .slider-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .slider-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    will-change: transform;
+  }
+
+  .slider-track img {
+    flex-shrink: 0;
+    height: 600px;
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+  }
+
+  .slider-track img.main {
+    width: 70vw;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .slider-track img.prev-preview,
+  .slider-track img.next-preview {
+    width: 20vw;
+    opacity: 0.4;
+    transform: scale(0.5);
+  }
+
+/* 다음 이미지 클릭 시 */
+.slider-track img.clicked-next {
+  transform: scale(1.5) translateX(-600px);
+  opacity: 1;
+  transition: transform 1s ease;
+}
+
+/* 이전 이미지 클릭 시 */
+.slider-track img.clicked-prev {
+  transform: scale(1.5) translateX(600px);
+  opacity: 1;
+  transition: transform 1s ease;
+}
+
+  .slider-track img.outgoing {
+    transform: scale(0.8) translateX(-100px);
+    opacity: 0.2;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+  }
+
+  .slider-track img.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+</style>
+</head>
+
+<body>
+  <div id="header-container"></div>
+  <div class="work-header"></div>
+
+  <div class="project-visual-section">
+    <img class="project-main-img" src="" alt="프로젝트 대표 이미지" loading="eager" onload="this.classList.add('loaded')">
+  </div>
+
+  <div class="project-info-section">
+    <h1 class="project-title"></h1>
+    <p class="project-client"></p>
+    <p class="project-description"></p>
+    <a class="project_link" href="" target="_blank"></a>
+  </div>
+
+  <div class="slider-wrapper">
+    <div class="slider-track" id="slider-track"></div>
+  </div>
+
+  <div class="project-section-description">
+    <p class="project-section-text"></p>
+  </div>
+
+  <footer class="project-footer">
+    <div class="footer-divider"></div>
+    <div class="project-footer-author">
+      <img class="footer-author-img" src="" alt="">
+      <p class="footer-author-name"></p>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-copyright">
+      © 2023. DESIGNTHEHAM Co. all rights reserved.
+    </div>
+  </footer>
+
+  <script src="/js/initHeader.js"></script>
+  <script type="module" src="/js/projectDetail.js"></script>
+</body>
+</html>

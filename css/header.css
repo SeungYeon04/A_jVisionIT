@@ -4,7 +4,7 @@ body {
 
 /* 상단 로그인 영역 */
 .header-top {
-  background-color: #444;
+  background-color: #232323;
   padding: 8px 20px;
   display: flex;
   justify-content: flex-end;
@@ -18,7 +18,7 @@ body {
 
 /* 하단 헤더 영역 */
 .header-bottom {
-  background-color: #888;
+  background-color: #6d6d6dab;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,7 +35,7 @@ body {
 }
 
 .logo img {
-  width: 80px;
+  width: 150px;
   height: auto;
   object-fit: contain;
 }
@@ -58,6 +58,8 @@ body {
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
+  position: absolute;
+  right: 20px;
 }
 
 .hamburger div {
@@ -141,7 +143,7 @@ body {
 /* ✅ Mega Menu 추가 영역 */
 .mega-menu {
   position: absolute;
-  top:61px;
+  top: 60px;
   left: 0;
   width: 100%;
   background-color: white;
@@ -152,6 +154,9 @@ body {
   z-index: 1100;
   opacity: 0;
   visibility: hidden;
+}
+
+.transition-ready {
   transform: translateY(-10px);
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
 }
@@ -203,33 +208,35 @@ body {
   cursor: pointer;
   white-space: nowrap;
 }
+a {
+  text-decoration: none;
+}
 
 .submenu-item:hover {
   color: #0078d4;
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 
 .header-right {
   display: none;
 }
-#selected-language{
+#selected-language {
   display: flex;
   flex-direction: row;
   align-items: center;
   padding-left: 5px;
 }
-#selected-language > .arrow{
-  font-size: 10px;
+#selected-language > .arrow {
+  font-size: 9px;
   position: absolute;
-  right: 10px;
+  right: 30px;
   display: block !important;
 }
-
 
 .custom-select-wrapper {
   position: relative;
   width: 100px;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
 }
 
@@ -265,6 +272,12 @@ body {
   z-index: 1000;
   color: #333;
 }
+#selected-language > .arrow {
+  font-size: 9px;
+  position: absolute;
+  right: 12px;
+  display: block !important;
+}
 
 .custom-select.open .custom-options {
   display: block;
@@ -286,10 +299,12 @@ body {
   color: white;
   padding: 8px 10px;
 }
-.header-right-pc{
+.header-right-pc {
   display: block !important;
   position: absolute;
-  right: 20px;
+  right: 10px;
+  border: 1px solid #a1a1a1;
+  border-radius: 10px;
 }
 /* 반응형: 모바일용 */
 @media (max-width: 768px) {
@@ -297,20 +312,23 @@ body {
     height: 60px;
     justify-content: center;
   }
-.header-right-pc{
-  display: none !important;
-}
+  .header-right-pc {
+    display: none !important;
+  }
   .header-top {
     display: none;
   }
 
   .logo img {
-    width: 80px;
+    width: 150px;
   }
 
   .header-right {
     display: flex;
+    border: 1px solid #a1a1a1;
+    border-radius: 10px;
   }
+
 
   .hamburger {
     display: flex;
@@ -328,14 +346,14 @@ body {
   .mega-menu {
     display: none;
   }
- 
 
   .header-right {
     display: flex;
     flex-direction: row;
     position: absolute;
-    right: 20px;
-    gap: 20px;
+    right: 60px;
   }
-
+  .lang-text {
+    margin-right: 5px;
+  }
 }

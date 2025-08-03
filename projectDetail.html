@@ -44,16 +44,18 @@
 
 /* 다음 이미지 클릭 시 */
 .slider-track img.clicked-next {
-  transform: scale(1.5) translateX(-600px);
+  width: 70vw;
+  transform: scale(1) translateX(-1300px);
   opacity: 1;
-  transition: transform 1s ease;
+  transition: transform 1s ease, width 1s ease;
 }
 
 /* 이전 이미지 클릭 시 */
 .slider-track img.clicked-prev {
-  transform: scale(1.5) translateX(600px);
+  width: 70vw;
+  transform: scale(1) translateX(300px);
   opacity: 1;
-  transition: transform 1s ease;
+  transition: transform 1s ease, width 1s ease;
 }
 
   .slider-track img.outgoing {

@@ -181,6 +181,7 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
   padding: 2rem;
+  overflow: hidden;
 }
 
 /* Tile Item (Poster) */
@@ -236,9 +237,8 @@ body {
 }
 
 .project-info-section {
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 15%;
+  width:max-content;
+  padding: 0 10%;
   background-color: #000;
   color: #fff;
   margin-bottom: 60px;

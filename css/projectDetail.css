@@ -106,7 +106,7 @@ body {
 
 .project_link {
   text-decoration: none;
-  color: rgb(207, 207, 207);
+  color: rgb(17, 139, 177);
 }
 
 .project_link:hover {
@@ -280,7 +280,7 @@ body {
 }
 
 .footer-author-img {
-  width: 20rem;
+  width: 15rem;
   height: auto;
   border-radius: 8px;
   object-fit: cover;
